@@ -4,7 +4,7 @@
 
 ## 1. Context & Vision
 
-R3AKT (**R**eticulum **E**mergency **A**wareness & **C**oordination **T**erminal) is a Reticulum-based system for small to mid-size tactical groups (civilian or military) requiring secure, low-cost, resilient situational awareness (SA) in both connected and off-grid environments.
+R3AKT (**R**eticulum **E**mergency **A**wareness & **C**oordination **T**erminal) is a Reticulum-based system for small to mid-size tactical groups  requiring secure, low-cost, resilient situational awareness (SA) in both connected and off-grid environments.
 
 The system will:
 
