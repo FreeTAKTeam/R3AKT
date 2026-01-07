@@ -70,7 +70,7 @@ UC-07 – After-Action Review & Replay
 
 UC-08 – Multi-Network Bridging
 
-* Bridge multiple Reticulum interfaces (IP, LORA, etc.) 
+* USe Reticulum to Bridge multiple Reticulum interfaces (IP, LORA, etc.) 
 * Optionally integrate with Meshtastic / TAK infrastructure via separate gateways .
 
 ---
@@ -128,7 +128,7 @@ CON-02: Must prioritize security and privacy (end-to-end crypto, minimal metadat
 
 CON-03: Should run on minimal hardware (e.g. 2–4 GB RAM SBC) for small teams, with options to scale out.
 
-CON-04: Licensing of dependencies must allow open, community-friendly distribution and commercial reuse.
+CON-04: Licensing of dependencies must allow open, community-friendly distribution and commercial reuse. Main License is Eclipse Public License (EPL)
 
 ---
 
@@ -142,12 +142,12 @@ REQ-001 – Reticulum Node Integration
 
 REQ-002 – Telemetry Ingestion
 
-* The system shall subscribe to telemetry streams from the Reticulum Telemetry Hub (positions, headings, status values) and map them to entities (users, vehicles, sensors).
+* A client in the system shall subscribe to telemetry streams from the Reticulum Telemetry Hub (positions, headings, status values) and map them to entities (users, vehicles, sensors).
 
 REQ-003 – LXMF Messaging Support
 
 * The system shall send and receive LXMF messages using the Reticulum OpenAPI LXMF object API.
-* It shall be possible to define message schemas (e.g. emergency formats) and map them to internal event types.
+* It shall be possible to define message schemas (e.g. emergency, Mission) in OpenAPi formats and map them to internal event types.
 
 REQ-004 – Store-and-Forward Behavior
 
@@ -160,7 +160,7 @@ REQ-005 – Multi-Process API Design
 
 REQ-006 – WebSocket Gateway
 
-* The server shall provide one or more WebSocket endpoints for pushing live updates (positions, messages, alerts) to connected clients.
+* The server shall provide one or more WebSocket endpoints for pushing live updates (positions, messages, alerts) to connected UI clients.
 
 ### 5.2 Situational Awareness Core
 
@@ -219,7 +219,7 @@ REQ-022 – Android LXMF Clients
 
   * Receive LXMF messages from existing clients (Sideband, etc.).
   * Send structured messages back to those clients.
-* Mapping between LXMF identities and R3AKT user/entity records shall be configurable.
+* Mapping between generic LXMF identities (chat, file, image, telemtery) and R3AKT entities records shall be configurable.
 
 REQ-023 – Low-Bandwidth UI Mode
 
@@ -531,224 +531,6 @@ Components (to be refined into diagrams):
   * Same SPA bundled for offline / desktop use.
 
 This architecture shall remain agnostic of specific frameworks until a short spike confirms the best choices (e.g. FastAPI vs. other Python frameworks, DB selection, etc.).
-
----
-
-## 8. Implementation Phasing
-
-### Phase 0 – Design & Spikes
-
-* Finalize requirements and architecture.
-* Spike:
-
-  * Reticulum + Telemetry Hub integration running in a minimal demo.
-  * LXMF API via Reticulum OpenAPI project.
-  * Minimal REST + WebSocket service pushing dummy position updates to a web page.
-
-### Phase 1 – MVP Server & Web Client
-
-* Implement core:
-
-  * R3AKT Core API with missions, entities, basic events.
-  * Telemetry ingestion from Reticulum Telemetry Hub.
-  * LXMF messaging for simple text messages.
-  * Web UI: map view, entity list, message panel.
-* Package web client as Electron app.
-
-### Phase 2 – Home Assistant Integration & Alerts
-
-* Implement Home Assistant integration plugin.
-* Define mapping between HA entities and R3AKT entities/events.
-* Implement geofencing and alert rules.
-
-### Phase 3 – Plugin Framework & Extensibility
-
-* Solidify plugin/microservice lifecycle and configuration.
-* Document plugin API and provide at least one reference plugin (Home Assistant or a simple telemetry enricher).
-
-### Phase 4 – Hardening & Field Testing
-
-* Security review and hardening.
-* Performance and resilience tests (low bandwidth, loss of connectivity, power cycles).
-* Field trials with real users and feedback loop.
-
----
-
-## 9. Open Questions / To-Refine
-
-OQ-01: Exact data model for entities and missions (align with prior R3AKT modeling work).
-OQ-02: Choice of base map technology and offline tile strategy.
-OQ-03: Concrete performance targets (number of clients / tracks / events) for typical deployments.
-OQ-04: Detailed Home Assistant integration patterns (poll vs. webhook vs. MQTT, etc.).
-OQ-05: Governance of plugins (signing, trust model, distribution).
-These can be resolved iteratively as the design doc and prototypes evolve.
-
-#  R3AKT MVP
-
-### Layer 0 — “Eliopoli core” (single off-grid property)
-
-**Primary users**
-
-* You (operator), family members (non-technical), occasional guests/workers.
-
-**Jobs-to-be-done**
-
-* Map-based situational awareness on-property.
-* Emergency messaging when internet/cell is down.
-* “Lost animal” workflow (last seen, search sectors, sightings).
-* Base coordination (house ↔ barn ↔ fields ↔ lake edge).
-
-**MVP-0 (must ship first)**
-
-* **Messaging:** reliable store-and-forward (queued delivery, retries, receipts).
-* **Geo:** “I’m here” beacons + last known location cache.
-* **Map UI:** basic map, markers, and a “lost animal” report type.
-* **Offline-first:** works with no WAN; local persistence.
-* **Roles:** Owner/Admin + Family users (simple).
-
----
-
-### Layer 1 — “Rural/remote property network” (neighbors, farms, small communities)
-
-**Primary users**
-
-* Nearby farms, volunteer responders, small community coordinators.
-
-**Jobs-to-be-done**
-
-* Multi-household coordination.
-* Shared resource board (generators, chainsaws, shelter, vehicles).
-* Incident channel per event (storm, wildfire smoke, missing person/animal).
-
-**MVP-1 (adds)**
-
-* **Multi-group ops:** create/join “ops rooms”.
-* **Resource registry:** simple list + status (available/assigned).
-* **Interop export:** produce/share a minimal incident package (JSON/CoT).
-
----
-
-### Layer 2 — “Political activism / demonstrations”
-
-**Primary users**
-
-* Demonstration organizers, marshals, medics, legal observers.
-
-**Jobs-to-be-done**
-
-* Team coordination under network disruption and high adversarial conditions.
-* Broadcast safety notices, rendezvous points, deconfliction.
-* Minimal identity exposure, compartmentalized groups.
-
-**MVP-2 (adds)**
-
-* **Ephemeral groups:** rotating identifiers, rapid invite, short-lived ops.
-* **Privacy controls:** minimization of location sharing; per-role visibility.
-* **Safety mode:** quick “I’m detained / need medic” workflow.
-* **Audit-lite:** optional local-only log export for after-action.
-
----
-
-### Layer 3 — “Volunteer emergency / SAR / civil defense”
-
-**Primary users**
-
-* Volunteer SAR, community emergency response teams.
-
-**Jobs-to-be-done**
-
-* Tasking, sectors, track searchers, share points of interest, attachments.
-
-**MVP-3 (adds)**
-
-* **Tasking:** assignments, status, check-ins.
-* **File transfer:** photos/documents with integrity checks.
-* **Integration:** bridges into common tooling (ATAK/CoT).
-
----
-
-## MVP focus: client vs server (practical decision)
-
-### Why “server-first” fails in practice (your own statement is correct)
-
-A server without a dedicated client produces no adoption loop: no map UX, no habit, no field feedback, no “minimum viable usage.” You need a usable client experience immediately.
-
-### Why “client-first” is risky (given Android complexity)
-
-Full custom Android is a time sink unless you already have the pipeline, UI patterns, background services, battery optimizations, and offline map stack.
-
-### Best compromise: **use an existing client + build the R3AKT “edge server” as a headless capability layer**
-
-* Deliver value in Layer 0 immediately (Eliopoli).
-* Keep Android work bounded to **plugin/bridge** scope.
-* Let the “server” be the reliability, persistence, and automation engine.
-
-Concretely:
-
-* **R3AKT Edge Node** (Python) provides: persistence, message queueing, group/state model, bridges, policies.
-* **Existing client** provides: map UI, chat UI, user familiarity.
-
----
-
-## Choosing the existing client: ATAK vs Sideband vs Columba
-
-### Option A — ATAK + plugin (best for future scale and activism/SAR layers)
-
-**Pros**
-
-* Mature map-first UX, teams already use it (Layer 2–3 fit).
-* CoT ecosystem: markers, tracks, chat patterns, tasking metaphors.
-* You can make R3AKT look like “just another data feed / transport.”
-
-**Cons**
-
-* Plugin development and Android build chain are non-trivial.
-* Security/interop constraints depend on ATAK distribution and versioning.
-
-**MVP path**
-
-* Start with **bridge-only**: R3AKT Edge emits/ingests **CoT**; ATAK consumes via a plugin or existing network pathways.
-* Keep plugin scope minimal: “transport adapter + auth + basic chat/markers.”
-
----
-
-### Option B — Sideband plugin/bridge (best for fastest Reticulum-native field MVP)
-
-**Pros**
-
-* Already aligned with Reticulum usage patterns.
-* Likely the lowest-friction path to prove Layer 0 (Eliopoli comms reliability).
-
-**Cons**
-
-* Less mainstream for activism/SAR compared to ATAK.
-* Map UX and operational workflows may be weaker than ATAK for Layer 2–3.
-
-**MVP path**
-
-* Build **R3AKT Edge as a Sideband companion**: store/forward, incident rooms, simple POIs.
-* Add a CoT bridge later if you migrate to ATAK for Layer 2–3.
-
----
-
-### Option C — Columba with a plugin system (best if you want to own the roadmap)
-
-**Pros**
-
-* You can constrain the plugin API to exactly what R3AKT needs (LXMF separation, msgpack payloads, capability discovery, etc.).
-* Enables long-term “R3AKT-native client” without rewriting everything at once.
-
-**Cons**
-
-* You must successfully drive upstream developer adoption and governance.
-* Still likely ends in Android complexity, just later.
-
-**MVP path**
-
-* Define a **plugin contract** that makes R3AKT Edge the “brain,” Columba the “face.”
-* Plugins: Map overlay, ops rooms, forms (lost animal / incident), file transfer.
-
----
 
 
 # R3AKT Technical Architecture Specification
@@ -1116,6 +898,227 @@ This model:
 * avoids REST-era assumptions
 
 ---
+
+## 9. Open Questions / To-Refine
+
+* OQ-01: Exact data model for entities and missions (align with prior R3AKT modeling work).
+* OQ-02: Choice of base map technology and offline tile strategy.
+* OQ-03: Concrete performance targets (number of clients / tracks / events) for typical deployments.
+* OQ-04: Detailed Home Assistant integration patterns (poll vs. webhook vs. MQTT, etc.).
+* OQ-05: Governance of plugins (signing, trust model, distribution).
+
+These can be resolved iteratively as the design doc and prototypes evolve.
+---
+
+## 8. Implementation Phasing
+
+### Phase 0 – Design & Spikes
+
+* Finalize requirements and architecture.
+* Spike:
+
+  * Reticulum + Telemetry Hub integration running in a minimal demo.
+  * LXMF API via Reticulum OpenAPI project.
+  * Minimal REST + WebSocket service pushing dummy position updates to a web page.
+
+### Phase 1 – MVP Server & Web Client
+
+* Implement core:
+
+  * R3AKT Core API with missions, entities, basic events.
+  * Telemetry ingestion from Reticulum Telemetry Hub.
+  * LXMF messaging for simple text messages.
+  * Web UI: map view, entity list, message panel.
+* Package web client as Electron app.
+
+### Phase 2 – Home Assistant Integration & Alerts
+
+* Implement Home Assistant integration plugin.
+* Define mapping between HA entities and R3AKT entities/events.
+* Implement geofencing and alert rules.
+
+### Phase 3 – Plugin Framework & Extensibility
+
+* Solidify plugin/microservice lifecycle and configuration.
+* Document plugin API and provide at least one reference plugin (Home Assistant or a simple telemetry enricher).
+
+### Phase 4 – Hardening & Field Testing
+
+* Security review and hardening.
+* Performance and resilience tests (low bandwidth, loss of connectivity, power cycles).
+* Field trials with real users and feedback loop.
+
+
+
+
+#  R3AKT MVP
+
+### Layer 0 — “Eliopoli core” (single off-grid property)
+
+**Primary users**
+
+* You (operator), family members (non-technical), occasional guests/workers.
+
+**Jobs-to-be-done**
+
+* Map-based situational awareness on-property.
+* Emergency messaging when internet/cell is down.
+* “Lost animal” workflow (last seen, search sectors, sightings).
+* Base coordination (house ↔ barn ↔ fields ↔ lake edge).
+
+**MVP-0 (must ship first)**
+
+* **Messaging:** reliable store-and-forward (queued delivery, retries, receipts).
+* **Geo:** “I’m here” beacons + last known location cache.
+* **Map UI:** basic map, markers, and a “lost animal” report type.
+* **Offline-first:** works with no WAN; local persistence.
+* **Roles:** Owner/Admin + Family users (simple).
+
+---
+
+### Layer 1 — “Rural/remote property network” (neighbors, farms, small communities)
+
+**Primary users**
+
+* Nearby farms, volunteer responders, small community coordinators.
+
+**Jobs-to-be-done**
+
+* Multi-household coordination.
+* Shared resource board (generators, chainsaws, shelter, vehicles).
+* Incident channel per event (storm, wildfire smoke, missing person/animal).
+
+**MVP-1 (adds)**
+
+* **Multi-group ops:** create/join “ops rooms”.
+* **Resource registry:** simple list + status (available/assigned).
+* **Interop export:** produce/share a minimal incident package (JSON/CoT).
+
+---
+
+### Layer 2 — “Political activism / demonstrations”
+
+**Primary users**
+
+* Demonstration organizers, marshals, medics, legal observers.
+
+**Jobs-to-be-done**
+
+* Team coordination under network disruption and high adversarial conditions.
+* Broadcast safety notices, rendezvous points, deconfliction.
+* Minimal identity exposure, compartmentalized groups.
+
+**MVP-2 (adds)**
+
+* **Ephemeral groups:** rotating identifiers, rapid invite, short-lived ops.
+* **Privacy controls:** minimization of location sharing; per-role visibility.
+* **Safety mode:** quick “I’m detained / need medic” workflow.
+* **Audit-lite:** optional local-only log export for after-action.
+
+---
+
+### Layer 3 — “Volunteer emergency / SAR / civil defense”
+
+**Primary users**
+
+* Volunteer SAR, community emergency response teams.
+
+**Jobs-to-be-done**
+
+* Tasking, sectors, track searchers, share points of interest, attachments.
+
+**MVP-3 (adds)**
+
+* **Tasking:** assignments, status, check-ins.
+* **File transfer:** photos/documents with integrity checks.
+* **Integration:** bridges into common tooling (ATAK/CoT).
+
+---
+
+## MVP focus: client vs server (practical decision)
+
+### Why “server-first” fails in practice (your own statement is correct)
+
+A server without a dedicated client produces no adoption loop: no map UX, no habit, no field feedback, no “minimum viable usage.” You need a usable client experience immediately.
+
+### Why “client-first” is risky (given Android complexity)
+
+Full custom Android is a time sink unless you already have the pipeline, UI patterns, background services, battery optimizations, and offline map stack.
+
+### Best compromise: **use an existing client + build the R3AKT “edge server” as a headless capability layer**
+
+* Deliver value in Layer 0 immediately (Eliopoli).
+* Keep Android work bounded to **plugin/bridge** scope.
+* Let the “server” be the reliability, persistence, and automation engine.
+
+Concretely:
+
+* **R3AKT Edge Node** (Python) provides: persistence, message queueing, group/state model, bridges, policies.
+* **Existing client** provides: map UI, chat UI, user familiarity.
+
+---
+
+## Choosing the existing client: ATAK vs Sideband vs Columba
+
+### Option A — ATAK + plugin (best for future scale and activism/SAR layers)
+
+**Pros**
+
+* Mature map-first UX, teams already use it (Layer 2–3 fit).
+* CoT ecosystem: markers, tracks, chat patterns, tasking metaphors.
+* You can make R3AKT look like “just another data feed / transport.”
+
+**Cons**
+
+* Plugin development and Android build chain are non-trivial.
+* Security/interop constraints depend on ATAK distribution and versioning.
+
+**MVP path**
+
+* Start with **bridge-only**: R3AKT Edge emits/ingests **CoT**; ATAK consumes via a plugin or existing network pathways.
+* Keep plugin scope minimal: “transport adapter + auth + basic chat/markers.”
+
+---
+
+### Option B — Sideband plugin/bridge (best for fastest Reticulum-native field MVP)
+
+**Pros**
+
+* Already aligned with Reticulum usage patterns.
+* Likely the lowest-friction path to prove Layer 0 (Eliopoli comms reliability).
+
+**Cons**
+
+* Less mainstream for activism/SAR compared to ATAK.
+* Map UX and operational workflows may be weaker than ATAK for Layer 2–3.
+
+**MVP path**
+
+* Build **R3AKT Edge as a Sideband companion**: store/forward, incident rooms, simple POIs.
+* Add a CoT bridge later if you migrate to ATAK for Layer 2–3.
+
+---
+
+### Option C — Columba with a plugin system (best if you want to own the roadmap)
+
+**Pros**
+
+* You can constrain the plugin API to exactly what R3AKT needs (LXMF separation, msgpack payloads, capability discovery, etc.).
+* Enables long-term “R3AKT-native client” without rewriting everything at once.
+
+**Cons**
+
+* You must successfully drive upstream developer adoption and governance.
+* Still likely ends in Android complexity, just later.
+
+**MVP path**
+
+* Define a **plugin contract** that makes R3AKT Edge the “brain,” Columba the “face.”
+* Plugins: Map overlay, ops rooms, forms (lost animal / incident), file transfer.
+
+---
+
+
 
 If you want next, I can:
 
