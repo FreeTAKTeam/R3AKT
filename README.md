@@ -79,7 +79,7 @@ UC-08 – Multi-Network Bridging
 
 P-01 – Field Operator
 
-* Uses lightweight client (browser/Electron or Android LXMF app) to see map, send position, and exchange messages.
+* Uses lightweight client (browser/Electron or Android LXMF app Like Columba) to see map, send position, and exchange messages.
 
 P-02 – Team Leader / Dispatcher
 
@@ -91,11 +91,8 @@ P-03 – System Integrator / Engineer
 
 P-04 – System Administrator
 
-* Maintains OS, backups, user accounts, certificates, and overall security posture.
+* Maintains OS, backups, user accounts,  and overall security posture.
 
-P-05 – Product OEM / Reseller
-
-* Embeds R3AKT into their own hardware or SaaS offering as the SA backend.
 
 ---
 
@@ -114,14 +111,14 @@ TECH-02: Messaging & Telemetry
 
 TECH-03: Application Server
 
-* R3AKT backend exposing REST APIs and WebSocket endpoints.
+* R3AKT backend based on the Reticulum API project, exposing REST APIs and WebSocket endpoints.
 * Each functional area (e.g. telemetry, messaging, mapping, integration) runs as its own process/service.
 
 TECH-04: Client Technologies
 
 * Browser-based client (SPA or modular web app) consuming REST + WebSocket.
 * Electron-packaged desktop client(s) derived from the browser app.
-* Support for existing Android LXMF clients (Sideband, etc.) via LXMF gateways.
+* Support for existing Android LXMF clients (Sideband, Columba, etc.) via LXMF gateways.
 
 ### 4.2 Constraints
 
@@ -158,7 +155,7 @@ REQ-004 – Store-and-Forward Behavior
 
 REQ-005 – Multi-Process API Design
 
-* Each major API surface (e.g. /telemetry, /messages, /map, /integration) shall be implemented in its own process or microservice.
+* Each major API surface (e.g. /telemetry, /messages, /map, /integration) shall be implemented in its own process (microservice).
 * Inter-process communication shall be explicit and observable (e.g. message bus, internal APIs).
 
 REQ-006 – WebSocket Gateway
