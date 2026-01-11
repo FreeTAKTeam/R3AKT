@@ -74,7 +74,7 @@ UC-07 – After-Action Review & Replay
 
 UC-08 – Multi-Network Bridging
 
-* Bridge multiple Reticulum interfaces (IP, LORA, etc.) 
+* USe Reticulum to Bridge multiple Reticulum interfaces (IP, LORA, etc.) 
 * Optionally integrate with Meshtastic / TAK infrastructure via separate gateways .
 
 ---
@@ -83,7 +83,7 @@ UC-08 – Multi-Network Bridging
 
 P-01 – Field Operator
 
-* Uses lightweight client (browser/Electron or Android LXMF app Like Columba) to see map, send position, and exchange messages.
+* Uses lightweight client (browser/Electron or Android LXMF app Like Columba Like Columba) to see map, send position, and exchange messages.
 
 P-02 – Team Leader / Dispatcher
 
@@ -132,7 +132,7 @@ CON-02: Must prioritize security and privacy (end-to-end crypto, minimal metadat
 
 CON-03: Should run on minimal hardware (e.g. 2–4 GB RAM SBC) for small teams, with options to scale out.
 
-CON-04: Licensing of dependencies must allow open, community-friendly distribution and commercial reuse.
+CON-04: Licensing of dependencies must allow open, community-friendly distribution and commercial reuse. Main License is Eclipse Public License (EPL)
 
 ---
 
@@ -146,12 +146,12 @@ REQ-001 – Reticulum Node Integration
 
 REQ-002 – Telemetry Ingestion
 
-* The system shall subscribe to telemetry streams from the Reticulum Telemetry Hub (positions, headings, status values) and map them to entities (users, vehicles, sensors).
+* A client in the system shall subscribe to telemetry streams from the Reticulum Telemetry Hub (positions, headings, status values) and map them to entities (users, vehicles, sensors).
 
 REQ-003 – LXMF Messaging Support
 
 * The system shall send and receive LXMF messages using the Reticulum OpenAPI LXMF object API.
-* It shall be possible to define message schemas (e.g. emergency formats) and map them to internal event types.
+* It shall be possible to define message schemas (e.g. emergency, Mission) in OpenAPi formats and map them to internal event types.
 
 REQ-004 – Store-and-Forward Behavior
 
@@ -164,7 +164,7 @@ REQ-005 – Multi-Process API Design
 
 REQ-006 – WebSocket Gateway
 
-* The server shall provide one or more WebSocket endpoints for pushing live updates (positions, messages, alerts) to connected clients.
+* The server shall provide one or more WebSocket endpoints for pushing live updates (positions, messages, alerts) to connected UI clients.
 
 ### 5.2 Situational Awareness Core
 
@@ -223,7 +223,7 @@ REQ-022 – Android LXMF Clients
 
   * Receive LXMF messages from existing clients (Sideband, etc.).
   * Send structured messages back to those clients.
-* Mapping between LXMF identities and R3AKT user/entity records shall be configurable.
+* Mapping between generic LXMF identities (chat, file, image, telemtery) and R3AKT entities records shall be configurable.
 
 REQ-023 – Low-Bandwidth UI Mode
 
