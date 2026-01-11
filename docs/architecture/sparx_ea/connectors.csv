@@ -1,0 +1,12 @@
+Source,Target,Type,Notes
+LXMF Ingress/Egress,Topics & Subscriptions,Dependency,Event routing subject to topics/subscriptions.
+LXMF Ingress/Egress,Capabilities & Security,Dependency,Filtering and security checks.
+LXMF Ingress/Egress,Event Store,Dependency,Persist events with retention.
+Event Store,Derived State Cache,Dependency,Update cached state by event application.
+Capabilities & Security,Audit Log,Dependency,Audit security actions.
+Topics & Subscriptions,Audit Log,Dependency,Audit topic/subscription changes.
+Event Store,Audit Log,Dependency,Audit event ingestion and retention actions.
+R3AKT Core,Analytics Service,Dependency,Event-based coupling over LXMF.
+R3AKT Core,ATAK CoT Gateway,Dependency,Event-based coupling over LXMF.
+R3AKT Core,Meshtastic Gateway,Dependency,Event-based coupling over LXMF.
+R3AKT Core,Agent Runtime,Dependency,Event-based coupling over LXMF.

@@ -1,0 +1,12 @@
+Name,Type,Stereotype,Notes,Package
+R3AKT Core,Component,,Python modular monolith hosting LXMF ingress/egress, persistence, topics, and capability enforcement.,Architecture
+LXMF Ingress/Egress,Component,,Authoritative LXMF transport handling ingress and egress.,Architecture
+Event Store,DataStore,,Time-retained immutable event log.,Architecture
+Derived State Cache,Component,,Mutable cached state derived from events with confidence.,Architecture
+Topics & Subscriptions,Component,,Hierarchical mission topics and subscription management.,Architecture
+Capabilities & Security,Component,,Capability enforcement and security checks.,Architecture
+Audit Log,DataStore,,Full audit trail: who/what/when/why.,Architecture
+Analytics Service,Component,,Auxiliary analytics/aggregation.,Architecture
+ATAK CoT Gateway,Component,,Auxiliary gateway bridging CoT with LXMF/event model.,Architecture
+Meshtastic Gateway,Component,,Auxiliary gateway bridging Meshtastic network events.,Architecture
+Agent Runtime,Component,,Auxiliary runtime for automated agents (analytics + publication).,Architecture

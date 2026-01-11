@@ -1,0 +1,74 @@
+openapi: 3.1.0
+info:
+  title: R3AKT Agent Runtime API
+  version: 0.1.0
+  description: Contract-first API for managing automated agents (analytics + publication only).
+servers:
+  - url: http://localhost:8104
+tags:
+  - name: agents
+paths:
+  /agents:
+    get:
+      tags: [agents]
+      summary: List agents
+      operationId: listAgents
+      responses:
+        "200":
+          description: Agents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    agent_id: { type: string }
+                    status: { type: string }
+    post:
+      tags: [agents]
+      summary: Register an agent
+      operationId: registerAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agent_id: { type: string }
+                capabilities:
+                  type: array
+                  items: { type: string }
+                publish_topics:
+                  type: array
+                  items: { type: string }
+      responses:
+        "201":
+          description: Registered
+  /agents/{agent_id}/start:
+    post:
+      tags: [agents]
+      summary: Start agent
+      operationId: startAgent
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "202":
+          description: Start accepted
+  /agents/{agent_id}/stop:
+    post:
+      tags: [agents]
+      summary: Stop agent
+      operationId: stopAgent
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "202":
+          description: Stop accepted

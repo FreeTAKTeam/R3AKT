@@ -1,0 +1,44 @@
+@startuml
+skinparam componentStyle rectangle
+
+package "Clients" {
+  [LXMF Client\n(Columba/Meshchat)] as C1
+  [New Rich Client\n(Map UI)] as C2
+  [External Systems\n(ATAK/Sensors)] as C3
+  [Automated Agent\n(Analytics/Publish)] as C4
+}
+
+package "R3AKT Core (Python Modular Monolith)" {
+  [LXMF Ingress/Egress] as LXMF
+  [Topics & Subscriptions] as TOP
+  [Capabilities & Security] as CAP
+  database "Event Store\n(retention)" as EV
+  [Derived State Cache\n(confidence)] as ST
+  database "Audit Log" as AU
+}
+
+package "Auxiliary Services" {
+  [Analytics/Aggregation] as ANA
+  [ATAK/CoT Gateway] as COT
+  [Meshtastic Gateway] as MESH
+  [Agent Runtime] as AGT
+}
+
+C1 --> LXMF
+C2 --> LXMF
+C3 --> LXMF
+C4 --> LXMF
+
+LXMF --> TOP
+LXMF --> CAP
+LXMF --> EV
+EV --> ST
+CAP --> AU
+TOP --> AU
+EV --> AU
+
+LXMF --> ANA
+LXMF --> COT
+LXMF --> MESH
+LXMF --> AGT
+@enduml

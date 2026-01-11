@@ -1,0 +1,45 @@
+flowchart TB
+  subgraph Clients
+    C1[LXMF Client\n(Columba/Meshchat)]
+    C2[New Rich Client\n(Map UI)]
+    C3[External System\n(ATAK/Sensors)]
+    C4[Automated Agent\n(Analytics/Publish)]
+  end
+
+  subgraph Core["R3AKT Core (Python Modular Monolith)"]
+    LXMF[LXMF Ingress/Egress]
+    TOPICS[Topics & Subscriptions]
+    CAPS[Capabilities & Security]
+    EVLOG[Event Store\n(retention)]
+    STATE[Derived State Cache\n(confidence)]
+    AUDIT[Audit Log]
+  end
+
+  subgraph Aux["Auxiliary Services (polyglot allowed)"]
+    ANA[Analytics/Aggregation]
+    COT[ATAK/CoT Gateway]
+    MESH[Meshtastic Gateway]
+    AGT[Agent Runtime]
+  end
+
+  C1 -->|LXMF events/commands| LXMF
+  C2 -->|LXMF events/commands| LXMF
+  C3 -->|LXMF events/commands| LXMF
+  C4 -->|LXMF events| LXMF
+
+  LXMF --> TOPICS
+  LXMF --> CAPS
+  LXMF --> EVLOG
+  EVLOG --> STATE
+  CAPS --> AUDIT
+  TOPICS --> AUDIT
+  EVLOG --> AUDIT
+
+  Core -->|LXMF event streams| ANA
+  Core -->|LXMF event streams| COT
+  Core -->|LXMF event streams| MESH
+  Core -->|LXMF event streams| AGT
+
+  LXMF -->|capability+topic filtered| C1
+  LXMF -->|capability+topic filtered| C2
+  LXMF -->|capability+topic filtered| C3

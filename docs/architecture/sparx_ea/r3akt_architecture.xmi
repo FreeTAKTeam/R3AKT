@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1"
+  xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
+  xmlns:uml="http://www.omg.org/spec/UML/20090901">
+  <uml:Model xmi:id="m1" name="R3AKT">
+    <packagedElement xmi:type="uml:Package" xmi:id="p_arch" name="Architecture">
+      <packagedElement xmi:type="uml:Component" xmi:id="c_core" name="R3AKT Core"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_lxmf" name="LXMF Ingress/Egress"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_topics" name="Topics &amp; Subscriptions"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_caps" name="Capabilities &amp; Security"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_state" name="Derived State Cache"/>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="d_events" name="Event Store"/>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="d_audit" name="Audit Log"/>
+
+      <packagedElement xmi:type="uml:Component" xmi:id="c_ana" name="Analytics Service"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_cot" name="ATAK CoT Gateway"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_mesh" name="Meshtastic Gateway"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="c_agents" name="Agent Runtime"/>
+
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep1" client="c_lxmf" supplier="c_topics"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep2" client="c_lxmf" supplier="c_caps"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep3" client="c_lxmf" supplier="d_events"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep4" client="d_events" supplier="c_state"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep5" client="c_caps" supplier="d_audit"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep6" client="c_topics" supplier="d_audit"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep7" client="d_events" supplier="d_audit"/>
+
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep8" client="c_core" supplier="c_ana"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep9" client="c_core" supplier="c_cot"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep10" client="c_core" supplier="c_mesh"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="dep11" client="c_core" supplier="c_agents"/>
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>

@@ -1,0 +1,336 @@
+openapi: 3.1.0
+info:
+  title: R3AKT Core Control API
+  version: 0.1.0
+  description: >
+    Contract-first HTTP API for R3AKT Core control-plane functions.
+    Authoritative transport remains LXMF for operational events; this API is for administration,
+    observability, and integration surfaces that require HTTP in some deployments.
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: health
+  - name: identities
+  - name: capabilities
+  - name: topics
+  - name: retention
+  - name: audit
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Health status
+      operationId: getHealth
+      responses:
+        "200":
+          description: Health payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  uptime_s: { type: integer }
+                  rns_ready: { type: boolean }
+                  lxmf_ready: { type: boolean }
+
+  /metrics:
+    get:
+      tags: [health]
+      summary: Operational metrics snapshot
+      operationId: getMetrics
+      responses:
+        "200":
+          description: Metrics payload
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /admin/identities:
+    get:
+      tags: [identities]
+      summary: List approved identities
+      operationId: listIdentities
+      responses:
+        "200":
+          description: List identities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Identity"
+    post:
+      tags: [identities]
+      summary: Approve an identity
+      operationId: approveIdentity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdentityApprovalRequest"
+      responses:
+        "201":
+          description: Approved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+
+  /admin/identities/{identity}/revoke:
+    post:
+      tags: [identities]
+      summary: Revoke an identity (blackhole/denylist)
+      operationId: revokeIdentity
+      parameters:
+        - name: identity
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string }
+      responses:
+        "202":
+          description: Revocation accepted
+
+  /admin/capabilities:
+    get:
+      tags: [capabilities]
+      summary: List capability definitions
+      operationId: listCapabilities
+      responses:
+        "200":
+          description: Capabilities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Capability"
+
+  /admin/identities/{identity}/capabilities:
+    put:
+      tags: [capabilities]
+      summary: Set capabilities for an identity (admin-only)
+      operationId: setIdentityCapabilities
+      parameters:
+        - name: identity
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                capabilities:
+                  type: array
+                  items: { type: string }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+
+  /topics:
+    get:
+      tags: [topics]
+      summary: List topics
+      operationId: listTopics
+      responses:
+        "200":
+          description: Topics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic"
+    post:
+      tags: [topics]
+      summary: Create topic
+      operationId: createTopic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TopicCreateRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Topic"
+
+  /topics/{topic}/subscriptions:
+    post:
+      tags: [topics]
+      summary: Subscribe identity to topic
+      operationId: subscribeTopic
+      parameters:
+        - name: topic
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identity: { type: string }
+      responses:
+        "202":
+          description: Subscription accepted
+    delete:
+      tags: [topics]
+      summary: Unsubscribe identity from topic
+      operationId: unsubscribeTopic
+      parameters:
+        - name: topic
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identity: { type: string }
+      responses:
+        "202":
+          description: Unsubscription accepted
+
+  /retention/policy:
+    get:
+      tags: [retention]
+      summary: Get retention policy
+      operationId: getRetentionPolicy
+      responses:
+        "200":
+          description: Retention policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetentionPolicy"
+    put:
+      tags: [retention]
+      summary: Set retention policy (admin-only)
+      operationId: setRetentionPolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetentionPolicy"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetentionPolicy"
+
+  /audit/search:
+    post:
+      tags: [audit]
+      summary: Search audit records
+      operationId: searchAudit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                time_from: { type: string, format: date-time }
+                time_to: { type: string, format: date-time }
+                actor_identity: { type: string }
+                topic: { type: string }
+                text: { type: string }
+      responses:
+        "200":
+          description: Results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AuditRecord"
+
+components:
+  schemas:
+    Identity:
+      type: object
+      properties:
+        identity: { type: string }
+        approved: { type: boolean }
+        capabilities:
+          type: array
+          items: { type: string }
+        notes: { type: string }
+    IdentityApprovalRequest:
+      type: object
+      required: [identity]
+      properties:
+        identity: { type: string }
+        notes: { type: string }
+    Capability:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+    Topic:
+      type: object
+      properties:
+        topic: { type: string }
+        description: { type: string }
+        created_at: { type: string, format: date-time }
+        created_by: { type: string }
+    TopicCreateRequest:
+      type: object
+      required: [topic]
+      properties:
+        topic: { type: string }
+        description: { type: string }
+    RetentionPolicy:
+      type: object
+      properties:
+        event_ttl_seconds: { type: integer, minimum: 0 }
+        max_events: { type: integer, minimum: 0 }
+        per_topic_overrides:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              event_ttl_seconds: { type: integer }
+              max_events: { type: integer }
+    AuditRecord:
+      type: object
+      properties:
+        id: { type: string }
+        timestamp: { type: string, format: date-time }
+        actor_identity: { type: string }
+        action: { type: string }
+        subject: { type: string }
+        topic: { type: string }
+        why: { type: string }
+        meta: { type: object }

@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+  title: R3AKT Meshtastic Gateway API
+  version: 0.1.0
+  description: Contract-first API for Meshtastic gateway auxiliary service.
+servers:
+  - url: http://localhost:8103
+tags:
+  - name: links
+  - name: config
+paths:
+  /links:
+    get:
+      tags: [links]
+      summary: List Meshtastic links
+      operationId: listLinks
+      responses:
+        "200":
+          description: Links
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    link_id: { type: string }
+                    status: { type: string }
+  /config:
+    put:
+      tags: [config]
+      summary: Update gateway configuration
+      operationId: setGatewayConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "200":
+          description: Updated

@@ -1,10 +1,14 @@
 # R3AKT
 
-# R3AKT – Requirements & Planning Draft
+Reticulum-based situational awareness and telemetry platform for small to mid-size tactical groups, designed for secure, low-cost, resilient operation in connected and off-grid environments.
+
+## Document Map
+- docs/PROJECT_STRUCTURE.md
+- docs/architecture/r3akt_Architecture.md
 
 ## 1. Context & Vision
 
-R3AKT (**R**eticulum **E**mergency **A**wareness & **C**oordination **T**erminal) is a Reticulum-based system for small to mid-size tactical groups  requiring secure, low-cost, resilient situational awareness (SA) in both connected and off-grid environments.
+R3AKT (R3AKT — Reticulum Reactive & Resilient Action Kit) is a Reticulum-based system for small to mid-size tactical groups  requiring secure, low-cost, resilient situational awareness (SA) in both connected and off-grid environments.
 
 The system will:
 
@@ -79,7 +83,7 @@ UC-08 – Multi-Network Bridging
 
 P-01 – Field Operator
 
-* Uses lightweight client (browser/Electron or Android LXMF app) to see map, send position, and exchange messages.
+* Uses lightweight client (browser/Electron or Android LXMF app Like Columba) to see map, send position, and exchange messages.
 
 P-02 – Team Leader / Dispatcher
 
@@ -91,11 +95,8 @@ P-03 – System Integrator / Engineer
 
 P-04 – System Administrator
 
-* Maintains OS, backups, user accounts, certificates, and overall security posture.
+* Maintains OS, backups, user accounts,  and overall security posture.
 
-P-05 – Product OEM / Reseller
-
-* Embeds R3AKT into their own hardware or SaaS offering as the SA backend.
 
 ---
 
@@ -114,14 +115,14 @@ TECH-02: Messaging & Telemetry
 
 TECH-03: Application Server
 
-* R3AKT backend exposing REST APIs and WebSocket endpoints.
+* R3AKT backend based on the Reticulum API project, exposing REST APIs and WebSocket endpoints.
 * Each functional area (e.g. telemetry, messaging, mapping, integration) runs as its own process/service.
 
 TECH-04: Client Technologies
 
 * Browser-based client (SPA or modular web app) consuming REST + WebSocket.
 * Electron-packaged desktop client(s) derived from the browser app.
-* Support for existing Android LXMF clients (Sideband, etc.) via LXMF gateways.
+* Support for existing Android LXMF clients (Sideband, Columba, etc.) via LXMF gateways.
 
 ### 4.2 Constraints
 
@@ -158,7 +159,7 @@ REQ-004 – Store-and-Forward Behavior
 
 REQ-005 – Multi-Process API Design
 
-* Each major API surface (e.g. /telemetry, /messages, /map, /integration) shall be implemented in its own process or microservice.
+* Each major API surface (e.g. /telemetry, /messages, /map, /integration) shall be implemented in its own process (microservice).
 * Inter-process communication shall be explicit and observable (e.g. message bus, internal APIs).
 
 REQ-006 – WebSocket Gateway
@@ -537,6 +538,10 @@ This architecture shall remain agnostic of specific frameworks until a short spi
 
 ---
 
+## Architecture & Domain Specs
+Detailed architecture and domain-object specifications live here:
+- docs/architecture/r3akt_Architecture.md
+
 ## 8. Implementation Phasing
 
 ### Phase 0 – Design & Spikes
@@ -546,7 +551,7 @@ This architecture shall remain agnostic of specific frameworks until a short spi
 
   * Reticulum + Telemetry Hub integration running in a minimal demo.
   * LXMF API via Reticulum OpenAPI project.
-  * Minimal REST + WebSocket service pushing dummy position updates to a web page.
+  * Minimal REST + WebSocket northbound service pushing dummy position updates to a web page.
 
 ### Phase 1 – MVP Server & Web Client
 
@@ -577,16 +582,8 @@ This architecture shall remain agnostic of specific frameworks until a short spi
 
 ---
 
-## 9. Open Questions / To-Refine
 
-OQ-01: Exact data model for entities and missions (align with prior R3AKT modeling work).
-OQ-02: Choice of base map technology and offline tile strategy.
-OQ-03: Concrete performance targets (number of clients / tracks / events) for typical deployments.
-OQ-04: Detailed Home Assistant integration patterns (poll vs. webhook vs. MQTT, etc.).
-OQ-05: Governance of plugins (signing, trust model, distribution).
-These can be resolved iteratively as the design doc and prototypes evolve.
-
-#  R3AKT MVP
+## R3AKT MVP
 
 ### Layer 0 — “Eliopoli core” (single off-grid property)
 
@@ -691,489 +688,6 @@ Concretely:
 * **R3AKT Edge Node** (Python) provides: persistence, message queueing, group/state model, bridges, policies.
 * **Existing client** provides: map UI, chat UI, user familiarity.
 
----
-
-## Choosing the existing client: ATAK vs Sideband vs Columba
-
-### Option A — ATAK + plugin (best for future scale and activism/SAR layers)
-
-**Pros**
-
-* Mature map-first UX, teams already use it (Layer 2–3 fit).
-* CoT ecosystem: markers, tracks, chat patterns, tasking metaphors.
-* You can make R3AKT look like “just another data feed / transport.”
-
-**Cons**
-
-* Plugin development and Android build chain are non-trivial.
-* Security/interop constraints depend on ATAK distribution and versioning.
-
-**MVP path**
-
-* Start with **bridge-only**: R3AKT Edge emits/ingests **CoT**; ATAK consumes via a plugin or existing network pathways.
-* Keep plugin scope minimal: “transport adapter + auth + basic chat/markers.”
-
----
-
-### Option B — Sideband plugin/bridge (best for fastest Reticulum-native field MVP)
-
-**Pros**
-
-* Already aligned with Reticulum usage patterns.
-* Likely the lowest-friction path to prove Layer 0 (Eliopoli comms reliability).
-
-**Cons**
-
-* Less mainstream for activism/SAR compared to ATAK.
-* Map UX and operational workflows may be weaker than ATAK for Layer 2–3.
-
-**MVP path**
-
-* Build **R3AKT Edge as a Sideband companion**: store/forward, incident rooms, simple POIs.
-* Add a CoT bridge later if you migrate to ATAK for Layer 2–3.
-
----
-
-### Option C — Columba with a plugin system (best if you want to own the roadmap)
-
-**Pros**
-
-* You can constrain the plugin API to exactly what R3AKT needs (LXMF separation, msgpack payloads, capability discovery, etc.).
-* Enables long-term “R3AKT-native client” without rewriting everything at once.
-
-**Cons**
-
-* You must successfully drive upstream developer adoption and governance.
-* Still likely ends in Android complexity, just later.
-
-**MVP path**
-
-* Define a **plugin contract** that makes R3AKT Edge the “brain,” Columba the “face.”
-* Plugins: Map overlay, ops rooms, forms (lost animal / incident), file transfer.
-
----
-
-
-# R3AKT Technical Architecture Specification
-
-## 1 Overview
-
-R3AKT is a next‑generation situational awareness and telemetry platform built on top of the Reticulum mesh network and inspired by existing FreeTAKTeam projects such as Reticulum‑Telemetry‑Hub (RTH) and Reticulum OpenAPI. It provides an extensible, asynchronous, microservice‑oriented architecture for collecting telemetry, processing commands and exposing data to clients through both the low‑bandwidth Reticulum LXMF protocol and a standard HTTP/REST interface. In keeping with the Aphrodites/DigitalPy design philosophy and the Expedibox best‑practices document, the system emphasizes clear separation of concerns, bounded contexts, idempotent operations, domain‑driven design and a plug‑in friendly component model.
-
-### 1.1 Goals
-
-* Mesh‑native communication using Reticulum and LXMF
-* Extensible command‑driven API over LXMF and HTTP
-* Telemetry collection, replication and querying
-* Modular, plugin‑based architecture (frozen spots / hot spots)
-* Domain‑driven design with bounded contexts and facades
-* Idempotent, observable and secure operations
-
-## 2 Key Principles & Best Practices
-
-1. Domain‑first modelling with pure Python domain objects
-2. Strict bounded contexts with explicit facades
-3. Service and command layers separate from persistence
-4. Explicit state machines for lifecycle‑driven entities
-5. Idempotency for all external interactions
-6. Async‑first design using asyncio
-7. Plugin/component architecture inspired by DigitalPy
-8. Structured logging, observability and error handling
-9. Strong security defaults
-10. Testability at unit, integration and system level
-
-
-Below is a **technical specification** for implementing **domain objects in R3AKT**, aligned with Reticulum constraints, NomadNet lessons, and optional C2 evolution.
-This is written as an **implementation-ready spec**, not a concept note.
-
----
-
-# R3AKT Domain Objects – Technical Specification
-
-## 1. Scope and Goals
-
-This specification defines how **domain objects** are represented, published, related, and consumed in **R3AKT**, operating over **Reticulum**.
-
-Goals:
-
-* Avoid REST / CRUD anti-patterns
-* Avoid identity explosion
-* Support duplication, divergence, and partial knowledge
-* Remain human-readable and tool-friendly (JSON, UML)
-* Allow optional evolution toward C2 semantics
-
-Non-goals:
-
-* Global consistency
-* Canonical object registries
-* Synchronous access patterns
-
----
-
-## 2. Fundamental Architectural Rules
-
-### R1 — Identity Rule
-
-Only **speaking actors** receive Reticulum identities.
-
-A *speaking actor* is an entity that:
-
-* can emit signed assertions
-* has an independent lifecycle
-* may exercise authority or intent
-
-Examples:
-
-* human operator
-* autonomous system
-* organization
-* gateway / service node
-
-Everything else is **not an identity**.
-
----
-
-### R2 — Domain Objects Are Assertions
-
-Domain objects are **named assertions published by an identity**, not globally addressable resources.
-
-They:
-
-* live inside a semantic namespace
-* are contextual
-* may be duplicated by different identities
-* have no independent routing presence
-
----
-
-### R3 — Hierarchy Is Semantic, Not Authoritative
-
-Hierarchical structure:
-
-* expresses *context*
-* does not imply truth or ownership
-* is interpreted locally by consumers
-
----
-
-## 3. R3AKT Destination Types (Closed Set)
-
-R3AKT defines a **small, fixed set of RNS destination roles**, inspired by NomadNet.
-
-| Type                 | Purpose                                  |
-| -------------------- | ---------------------------------------- |
-| `r3akt.actor.<hash>` | Human or autonomous decision-maker       |
-| `r3akt.node.<hash>`  | Service, gateway, bridge                 |
-| `r3akt.space.<hash>` | Semantic space publishing domain objects |
-
-Each destination:
-
-* is derived from a public key
-* is announced using standard RNS announce packets
-* owns exactly one semantic namespace
-
-No other destination types are allowed.
-
----
-
-## 4. Semantic Namespace Model
-
-Each `r3akt.space.*` destination exposes a **hierarchical namespace**.
-
-### 4.1 Namespace Characteristics
-
-* UTF-8 path syntax
-* Slash-separated (`/`)
-* Case-sensitive
-* No global uniqueness guarantees
-* Entire namespace is owned and signed by the destination identity
-
-### 4.2 Recommended Top-Level Paths
-
-```
-/
-├── units/
-├── vehicles/
-├── sensors/
-├── zones/
-├── relations/
-├── events/
-├── tasks/
-└── metadata/
-```
-
-These are **conventions**, not protocol requirements.
-
----
-
-## 5. Domain Object Representation
-
-### 5.1 Object Envelope (Mandatory)
-
-Every domain object MUST be wrapped in the following envelope:
-
-```json
-{
-  "path": "/units/alpha",
-  "type": "unit",
-  "timestamp": "2026-01-02T15:04:05Z",
-  "schema": "r3akt.unit.v1",
-  "payload": { }
-}
-```
-
-| Field       | Meaning                   |
-| ----------- | ------------------------- |
-| `path`      | Local semantic identifier |
-| `type`      | Domain object category    |
-| `timestamp` | Assertion time            |
-| `schema`    | Payload schema identifier |
-| `payload`   | Object-specific data      |
-
----
-
-### 5.2 Payload Schemas
-
-Payloads are defined using **JSON Schema**.
-
-Example: `r3akt.unit.v1`
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "designation": { "type": "string" },
-    "position": { "$ref": "geo.schema.json" },
-    "status": { "enum": ["active","inactive","unknown"] }
-  },
-  "required": ["designation","position"]
-}
-```
-
-Payload schemas:
-
-* MUST be immutable once published
-* MAY be versioned
-* MUST NOT contain references to external identities
-
----
-
-## 6. Domain Object Categories
-
-### 6.1 State Objects
-
-Describe the *current known state*.
-
-* May be superseded
-* Not append-only
-* Consumers choose latest by policy
-
-Path example:
-
-```
-/units/alpha/state
-```
-
----
-
-### 6.2 Event Objects
-
-Describe *historical facts*.
-
-* Append-only
-* Never modified
-* Never deleted
-
-Path example:
-
-```
-/events/unit-alpha-moved-20260102T1504
-```
-
----
-
-### 6.3 Relation Objects
-
-Describe relationships **within the semantic space**.
-
-```json
-{
-  "path": "/relations/command/uav07",
-  "type": "command_relation",
-  "payload": {
-    "from": "/units/red",
-    "to": "/vehicles/uav-07",
-    "scope": "operational"
-  }
-}
-```
-
-Relations:
-
-* are assertions, not bindings
-* are valid only in the context of the publishing identity
-* may conflict with other identities’ assertions
-
----
-
-### 6.4 Intent / Task Objects (Optional C2 Profile)
-
-```json
-{
-  "path": "/tasks/recon-north",
-  "type": "task",
-  "payload": {
-    "target": "/vehicles/uav-07",
-    "intent": "recon",
-    "area": "/zones/perimeter-north",
-    "issued_by": "/metadata/self"
-  }
-}
-```
-
-Execution is **not guaranteed**.
-
----
-
-## 7. Transport Mapping
-
-### 7.1 LXMF Payload Mapping
-
-Each domain object is transported as a single **LXMF message**:
-
-* Destination: the publishing `r3akt.space.*`
-* Content: JSON object envelope
-* Fields: MAY include compression or schema hints
-
-No request/response semantics are assumed.
-
----
-
-### 7.2 Propagation Nodes
-
-Propagation nodes:
-
-* cache messages verbatim
-* do not interpret semantics
-* do not enforce authority
-* may discard based on size or policy
-
----
-
-## 8. Duplication and Conflict Handling
-
-Duplication is **expected**.
-
-Consumers MUST:
-
-* maintain separate views per publishing identity
-* apply local trust, freshness, and authority policies
-* never assume global consistency
-
-There is **no global merge algorithm**.
-
----
-
-## 9. Security Model
-
-* All messages are signed by the publishing identity (RNS)
-* End-to-end encryption is provided by Reticulum
-* Authorization is **consumer-side policy**
-* No central ACLs exist
-
----
-
-## 10. Tooling Compatibility
-
-This model is compatible with:
-
-* UML (via stereotypes: Actor, Fact, Event, Relation)
-* JSON Schema
-* OpenAPI (schema definition only, not invocation)
-* Code generation pipelines
-
----
-
-## 11. Explicit Anti-Patterns (Forbidden)
-
-❌ Domain object = RNS identity
-❌ REST endpoints over Reticulum
-❌ Global object IDs
-❌ Mutable shared state
-❌ Implicit authority via structure
-
----
-
-## 12. Summary
-
-R3AKT domain objects are:
-
-> **Signed, hierarchical situational assertions published by autonomous identities.**
-
-This model:
-
-* scales
-* matches Reticulum semantics
-* aligns with NomadNet practice
-* allows optional C2 evolution
-* avoids REST-era assumptions
-
----
-
-If you want next, I can:
-
-* map this spec to an existing R3AKT schema
-* define the C2 profile formally
-* produce a reference Python implementation
-* define discovery and announce rules for `r3akt.space`
-
-State which one.
-
-
-
-## 3 High‑Level Architecture
-
-R3AKT is composed of a core runtime that hosts multiple asynchronous services sharing the same event loop but decoupled through facades and an internal event bus.
-
-* Reticulum / LXMF Service
-* HTTP / REST Gateway
-* Plugin Manager
-* Bounded Contexts (Telemetry, Command, Topic, etc.)
-* Shared Infrastructure (DB, schemas, event bus, logging)
-
-## 4 Bounded Contexts
-
-Each functional area is implemented as an isolated bounded context with its own domain models, services, repositories and facade.
-
-* Telemetry
-* Command
-* Topic
-* Optional plugin‑defined contexts
-
-All cross‑context interaction occurs exclusively via facades.
-
-## 5 Core Services
-
-### LXMF Service
-
-* Receives LXMF messages
-* Extracts command and request ID
-* Validates payload against schema
-* Dispatches to controller
-* Returns idempotent response
-
-### HTTP Service
-
-* FastAPI‑based REST interface
-* Mirrors LXMF commands
-* Shared controllers and facades
-
-### Plugin Manager
-
-* Discovers and loads plugins at runtime
-* Registers commands, schemas, controllers and tasks
-* Supports install/uninstall without core changes
-
 ## 6 Implementation Plan (Codex‑Ready Tasks)
 
 ### Phase 1 – Project Setup
@@ -1232,7 +746,7 @@ All cross‑context interaction occurs exclusively via facades.
 * Docker packaging
 * Monitoring stack
 
-## 7 Future Extensions
+### Phase X - Future Extensions
 
 * Multi‑transport support (MQTT, CLI)
 * Plugin marketplace
@@ -1240,6 +754,20 @@ All cross‑context interaction occurs exclusively via facades.
 * Event subscription framework
 * Edge‑to‑cloud bridge
 
+## 9. Open Questions / To-Refine
 
+OQ-01: Exact data model for entities and missions (align with prior R3AKT modeling work).
+OQ-02: Choice of base map technology and offline tile strategy.
+OQ-03: Concrete performance targets (number of clients / tracks / events) for typical deployments.
+OQ-04: Detailed Home Assistant integration patterns (poll vs. webhook vs. MQTT, etc.).
+OQ-05: Governance of plugins (signing, trust model, distribution).
+These can be resolved iteratively as the design doc and prototypes evolve.
 
+## Next Steps
 
+* map this spec to an existing R3AKT schema
+* define the C2 profile formally
+* produce a reference Python implementation
+* define discovery and announce rules for `r3akt.space`
+
+State which one.
