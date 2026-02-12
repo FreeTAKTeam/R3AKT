@@ -1,6 +1,6 @@
 # R3AKT – Codex Task List
 
-This task list is derived from the frozen R3AKT architecture, domain-object specification, and Reticulum-based microservices design.  
+This task list is derived from the frozen R3AKT architecture, domain-object specification, and Reticulum-based hybrid core + auxiliary-service design.  
 Tasks are ordered to support **incremental, testable delivery** and **Codex-friendly execution**.
 
 ---
@@ -45,6 +45,7 @@ Tasks are ordered to support **incremental, testable delivery** and **Codex-frie
   - timestamp
   - message hash / correlation id
 - [ ] Implement ACK handling (best-effort, at-least-once semantics)
+- [ ] Define and validate AsyncAPI channels/messages for LXMF commands and events
 - [ ] Add propagation-node compatibility tests
 
 ---
@@ -117,7 +118,7 @@ Tasks are ordered to support **incremental, testable delivery** and **Codex-frie
 
 ---
 
-## 9. HTTP / OpenAPI Control Plane
+## 9. HTTP / OpenAPI Northbound Control Plane
 
 - [ ] Implement FastAPI-based control API
 - [ ] Implement endpoints from OpenAPI spec:
@@ -129,6 +130,7 @@ Tasks are ordered to support **incremental, testable delivery** and **Codex-frie
   - retention
   - audit search
 - [ ] Ensure HTTP commands map 1:1 to LXMF commands
+- [ ] Validate HTTP operation to AsyncAPI message mapping for each command path
 - [ ] Generate server stubs from OpenAPI (contract-first)
 - [ ] Add OpenAPI schema validation tests
 

@@ -1,8 +1,9 @@
 # R3AKT Architecture Specification (Interview-Derived)
 
-**Version:** 0.1  
-**Date:** 2026-01-10  
+**Version:** 0.2  
+**Date:** 2026-02-06  
 **Scope:** R3AKT server architecture (core + auxiliary services) for Reticulum/LXMF situational awareness.
+**Status:** Canonical implementation baseline.
 
 ## 1. Purpose and Constraints
 
@@ -69,6 +70,7 @@ Domain objects are identified using a Nomadnet-inspired structure:
 ### 4.2 Commands vs events
 - Commands and events are separate message classes.
 - Commands use synchronous semantics (request/ack/result) over an asynchronous transport.
+- Every command MUST pass explicit capability authorization before execution; unauthorized commands are rejected and audited.
 
 ### 4.3 Transport
 - Authoritative transport: **LXMF over Reticulum**.
@@ -123,9 +125,16 @@ Auxiliary services interact with the core via **event-based messaging over Retic
 
 ## 8. Artifact Strategy
 
-- Primary outputs: architecture specification + OpenAPI contracts.
-- OpenAPI is authoritative (contract-first) for external client APIs and auxiliary service APIs.
+- Primary outputs: architecture specification + AsyncAPI (Reticulum/LXMF) + OpenAPI (HTTP).
+- AsyncAPI is authoritative for command/event contracts over Reticulum/LXMF.
+- OpenAPI is authoritative for northbound HTTP control APIs and auxiliary-service HTTP endpoints.
+- Contract mapping between OpenAPI operations and AsyncAPI messages MUST be explicit and testable.
 - Automation expectations: code generation and UML/EA model generation.
+
+**Decision traceability**
+- `docs/adr/0001-hybrid-core-plus-auxiliary-services.md`
+- `docs/adr/0002-asyncapi-for-reticulum-openapi-for-http.md`
+- `docs/adr/0003-explicit-capability-authorization-on-every-command.md`
 
 ---
 
@@ -185,11 +194,11 @@ Auxiliary services interact with the core via **event-based messaging over Retic
 | DL-50 | Trust boundaries | Layered: network + identity + application. |
 | DL-51 | Identity authority | Administrator-approved identities. |
 | DL-52 | Revocation | Reticulum denylist/blackhole. |
-| DL-53 | Command authorization | Commands treated as events; no explicit authorization. |
+| DL-53 | Command authorization | Every command requires explicit capability authorization; unauthorized commands are rejected and audited. |
 | DL-54 | Governance | Deployment-specific. |
 | DL-55 | Auditability | Full audit trail: who/what/when/why. |
-| DL-56 | Primary artifacts | Formal architecture document + OpenAPI specs. |
-| DL-57 | OpenAPI scope | External client APIs + auxiliary service APIs. |
-| DL-58 | OpenAPI authority | Contract-first; OpenAPI is authoritative. |
+| DL-56 | Primary artifacts | Formal architecture document + AsyncAPI specs (LXMF) + OpenAPI specs (HTTP). |
+| DL-57 | OpenAPI scope | Northbound/control and auxiliary HTTP APIs only. |
+| DL-58 | Contract authority | AsyncAPI is authoritative for Reticulum/LXMF interactions; OpenAPI is authoritative for HTTP APIs. |
 | DL-59 | Tooling | VS Code + Codex; Sparx EA; Markdown. |
 | DL-60 | Automation | Code + model generation. |

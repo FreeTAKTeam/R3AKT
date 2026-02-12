@@ -111,12 +111,12 @@ TECH-01: Networking
 TECH-02: Messaging & Telemetry
 
 * Reticulum Telemetry Hub for structured telemetry channels.
-* LXMF object API (Reticulum OpenAPI project) for message-based interactions and store-and-forward.
+* LXMF for message-based interactions and store-and-forward, with AsyncAPI as the authoritative contract for Reticulum interactions.
 
 TECH-03: Application Server
 
-* R3AKT backend based on the Reticulum API project, exposing REST APIs and WebSocket endpoints.
-* Each functional area (e.g. telemetry, messaging, mapping, integration) runs as its own process/service.
+* R3AKT backend is a hybrid architecture: a core modular monolith plus auxiliary services.
+* Core bounded contexts run in-process by default; auxiliary integrations can run as separate services when needed.
 
 TECH-04: Client Technologies
 
@@ -150,17 +150,18 @@ REQ-002 – Telemetry Ingestion
 
 REQ-003 – LXMF Messaging Support
 
-* The system shall send and receive LXMF messages using the Reticulum OpenAPI LXMF object API.
-* It shall be possible to define message schemas (e.g. emergency, Mission) in OpenAPi formats and map them to internal event types.
+* The system shall send and receive LXMF messages over Reticulum.
+* Reticulum/LXMF command and event contracts shall be defined in AsyncAPI and mapped to internal event types.
 
 REQ-004 – Store-and-Forward Behavior
 
 * For networks using Propagation Nodes, the server shall handle delayed delivery of messages and telemetry.
 
-REQ-005 – Multi-Process API Design
+REQ-005 – Hybrid Core + Auxiliary Service Design
 
-* Each major API surface (e.g. /telemetry, /messages, /map, /integration) shall be implemented in its own process (microservice).
-* Inter-process communication shall be explicit and observable (e.g. message bus, internal APIs).
+* Core telemetry/messaging/topic/security capabilities shall run in a modular monolith on the authoritative node.
+* Auxiliary capabilities (e.g. analytics, gateways, agents) may run as separate services.
+* Cross-process communication shall be explicit and observable.
 
 REQ-006 – WebSocket Gateway
 
@@ -467,7 +468,7 @@ REQ-042 – Isolation & Fault Tolerance
 NFR-01 – Security & Privacy
 
 * All communication over Reticulum is inherently encrypted; R3AKT shall not weaken this model.
-* Web APIs shall enforce authentication and authorization (RBAC or similar).
+* Web APIs shall enforce authentication and explicit capability-based authorization.
 * Audit logging shall be configurable and avoid storing sensitive payloads unless strictly necessary.
 
 NFR-02 – Performance
@@ -516,7 +517,7 @@ Components (to be refined into diagrams):
   * Connects to Reticulum Telemetry Hub, normalizes streams.
 * LXMF Gateway
 
-  * Uses Reticulum OpenAPI project to send/receive LXMF messages.
+  * Implements AsyncAPI-defined Reticulum/LXMF command and event flows.
 * R3AKT Core API
 
   * REST + WebSocket server implementing SA logic, mission model, entities, alerts, replay.
@@ -540,6 +541,9 @@ This architecture shall remain agnostic of specific frameworks until a short spi
 
 ## Architecture & Domain Specs
 Detailed architecture and domain-object specifications live here:
+- docs/architecture/R3AKT_Architecture_Spec.md
+- docs/architecture/Reticulum_Microservices_Architecture.md
+- docs/architecture/asyncapi/README.md
 - docs/architecture/r3akt_Architecture.md
 
 ## 8. Implementation Phasing

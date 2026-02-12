@@ -1,5 +1,9 @@
+# R3AKT Architecture and Domain Working Notes
 
-## 7. High-Level Architecture (Conceptual)
+This file contains working notes and technical detail.
+If any statement conflicts with `docs/architecture/R3AKT_Architecture_Spec.md`, the architecture spec is authoritative.
+
+## High-Level Architecture (Conceptual)
 
 Components (to be refined into diagrams):
 
@@ -11,7 +15,7 @@ Components (to be refined into diagrams):
   * Connects to Reticulum Telemetry Hub, normalizes streams.
 * LXMF Gateway
 
-  * Uses Reticulum OpenAPI project to send/receive LXMF messages.
+  * Implements AsyncAPI-defined Reticulum/LXMF command and event flows.
 * R3AKT Core API
 
   * REST + WebSocket server implementing SA logic, mission model, entities, alerts, replay.
@@ -32,11 +36,11 @@ Components (to be refined into diagrams):
 This architecture shall remain agnostic of specific frameworks until a short spike confirms the best choices (e.g. FastAPI vs. other Python frameworks, DB selection, etc.).
 
 ---
-# R3AKT Technical Architecture Specification
+### Technical Architecture Specification
 
 ## 1 Overview
 
-R3AKT is a next‑generation situational awareness and telemetry platform built on top of the Reticulum mesh network and inspired by existing FreeTAKTeam projects such as Reticulum‑Telemetry‑Hub (RTH) and Reticulum OpenAPI. It provides an extensible, asynchronous, microservice‑oriented architecture for collecting telemetry, processing commands and exposing data to clients through both the low‑bandwidth Reticulum LXMF protocol and a standard HTTP/REST interface. In keeping with the Aphrodites/DigitalPy design philosophy and the Expedibox best‑practices document, the system emphasizes clear separation of concerns, bounded contexts, idempotent operations, domain‑driven design and a plug‑in friendly component model.
+R3AKT is a next‑generation situational awareness and telemetry platform built on top of the Reticulum mesh network and inspired by existing FreeTAKTeam projects such as Reticulum‑Telemetry‑Hub (RTH) and Reticulum OpenAPI. It uses a hybrid architecture: a core modular monolith for primary bounded contexts and auxiliary services for optional/external capabilities. The system is asynchronous and event-driven, exposing low‑bandwidth Reticulum/LXMF interactions plus northbound HTTP interfaces where needed. In keeping with the Aphrodites/DigitalPy design philosophy and the Expedibox best‑practices document, the system emphasizes clear separation of concerns, bounded contexts, idempotent operations, domain‑driven design and a plug‑in friendly component model.
 
 ### 1.1 Goals
 
@@ -65,8 +69,6 @@ Below is a **technical specification** for implementing **domain objects in R3AK
 This is written as an **implementation-ready spec**, not a concept note.
 
 ---
-
-
 
 # R3AKT Domain Objects – Technical Specification
 
@@ -369,7 +371,8 @@ This model is compatible with:
 
 * UML (via stereotypes: Actor, Fact, Event, Relation)
 * JSON Schema
-* OpenAPI (schema definition only, not invocation)
+* AsyncAPI (authoritative for Reticulum/LXMF interactions)
+* OpenAPI (northbound HTTP API contracts)
 * Code generation pipelines
 
 ---
@@ -421,7 +424,7 @@ Each functional area is implemented as an isolated bounded context with its own 
 All cross‑context interaction occurs exclusively via facades.
 
 ## 5 Core Services
-Core services are provided by the Reticulum Telemetry Hub.
+Core services are provided by the R3AKT core runtime. Reticulum Telemetry Hub is an external telemetry source.
 
 
 ### LXMF Service

@@ -1,0 +1,219 @@
+classDiagram
+  direction LR
+
+  class missionRoleList {
+    <<enumeration>>
+    MISSION_OWNER
+    MISSION_SUBSCRIBER
+    MISSION_READONLY_SUBSCRIBER
+  }
+
+  class missionStatus {
+    <<enumeration>>
+    MISSION_ACTIVE
+    MISSION_PENDING
+    MISSION_DELETED
+    MISSION_COMPLETED_SUCCESS
+    MISSION_COMPLETED_FAILED
+  }
+
+  class MissionChangeType {
+    <<enumeration>>
+    CREATE_MISSION
+    DELETE_MISSION
+    ADD_CONTENT
+    REMOVE_CONTENT
+    CREATE_DATA_FEED
+    DELETE_DATA_FEED
+    MAP_LAYER
+  }
+
+  class TeamRole {
+    <<enumeration>>
+    TEAM_MEMBER
+    TEAM_LEAD
+    HQ
+    SNIPER
+    MEDIC
+    FORWARD_OBSERVER
+    RTO
+    K9
+  }
+
+  class checklistStatus {
+    <<enumeration>>
+    PENDING
+    COMPLETE
+    COMPLETE_LATE
+    LATE
+  }
+
+  class checklistTaskStatus {
+    <<enumeration>>
+    PENDING
+    COMPLETE
+    COMPLETE_LATE
+    LATE
+  }
+
+  class checklistColumnType {
+    <<enumeration>>
+    SHORT_STRING
+    LONG_STRING
+    INTEGER
+    ACTUAL_TIME
+    RELATIVE_TIME
+  }
+
+  class Mission {
+    <<TMF_JSON_Schema,dModelClass>>
+    <<BaseSchema>>
+    +missionId: Long
+    +description: String
+    +topic: String
+    +baseLayer: String
+    +path: String
+    +classification: String
+    +tool: String
+    +keywords: String[0..*]
+    +parent: Mission[0..1]
+    +children: Mission[0..*]
+    +feeds: String[0..*]
+    -missionTeam: Team
+    +passwordHash: String
+    +defaultRole: missionRoleList
+    -missionPriority: int
+    -missionStatus: missionStatus
+    +ownerRole: missionRoleList
+    +token: String
+    +inviteOnly: Boolean
+    +missionChanges: MissionChange[0..*]
+    +expiration: DateTime
+    +Mission_Associates_LogEntry: LogEntry[0..*]
+    +Mission_Associates_MissionRole: MissionRde[0..1]
+  }
+
+  class Team {
+    <<TMF_JSON_Schema>>
+    +color: TeamColor
+    -uid: int
+    +teamName: String
+    +teamdescription: String
+  }
+
+  class TeamMember {
+    <<TMF_JSON_Schema>>
+    +icon: string
+    +role: TeamRole
+    +callsign: string
+    +freq: decimal[0..1]
+    +email: string[0..1]
+    +phone: string[0..1]
+    +modulation: string
+    -rnsIdentity: String
+  }
+
+  class LogEntry {
+    <<TMF_JSON_Schema,dModelClass>>
+    <<BaseSchema>>
+    +content: String
+    +entryUid: String
+    +missionUid: String
+    +serverTime: DateTime
+    +clientTime: DateTime
+    +contentHashes: String[0..*]
+    +keywords: String[0..*]
+  }
+
+  class checklist {
+    <<TMF_JSON_Schema,dModelClass>>
+    <<XSElement>>
+    +checklistColumns: checklistColumn[1..*]
+    +checklistTasks: checklistTask[0..*]
+    +missionID: Mission[0..1]
+    +checklistStatus: checklistStatus
+    +name: string
+    +uid: string
+    +description: string
+    +startTime: string
+    +templateName: string
+  }
+
+  class checklistTask {
+    <<TMF_JSON_Schema,dModelClass>>
+    +number: int
+    +uid: string
+    +value: string
+    +taskStatus: checklistTaskStatus
+    +customStatus: int
+    +completeBy: String
+    +dueRelativeTime: DateTime
+    +notes: string
+    +completedDTG: DateTime
+    +dueDTG: DateTime
+  }
+
+  class checklistColumn {
+    <<TMF_JSON_Schema,dModelClass>>
+    +columnName: string
+    +columnType: checklistColumnType
+    +columnEditable: Boolean
+  }
+
+  class CheckListtemplate {
+    <<TMF_JSON_Schema,dModelClass>>
+    +checklist: checklist
+    -uid: String
+    -templateName: int
+  }
+
+  class MissionChange {
+    <<TMF_JSON_Schema,dModelClass>>
+    +hashes: String[0..*]
+    +uid: String
+    +name: String
+    +creatorUid: String
+    +missionID: String
+    +timestamp: DateTime
+    +notes: String
+    +type: String
+    +changeType: MissionChangeType
+    +isFederatedChange: Boolean
+  }
+  class MissionRde
+  class TeamColor {
+    <<enumeration>>
+    YELLOW
+    RED
+    BLUE
+    ORANGE
+    MAGENTA
+    MAROON
+    PURPLE
+    DARK_BLUE
+    CYAN
+    TEAL
+    GREEN
+    DARK_GREEN
+    BROWN
+  }
+
+  Mission "0..1" --> "0..*" Mission : parent/children
+  Mission "1" o-- "0..*" MissionChange : Mission_Associates_MissionChange
+  Mission "1" o-- "0..*" LogEntry : Mission_Associates_LogEntry
+  Mission "1" o-- "1..*" Team : Mission_Associates_Team
+  Team "1" o-- "1..*" TeamMember : Team_Associates_TeamMember
+
+  Mission "1" --> "0..*" checklist : Mission_Associates_checklist
+  checklist "1" o-- "0..*" checklistTask : checklist_Associates_checklistTasks
+  checklist "1" o-- "1..*" checklistColumn : checklist_Associates_checklistColumns
+  checklist "1" --> "0..1" CheckListtemplate : checklist_Associates_templates
+
+  Mission --> missionRoleList : defaultRole/ownerRole
+  Mission --> missionStatus : missionStatus
+  MissionChange --> MissionChangeType : changeType
+  Team --> TeamColor : color
+  TeamMember --> TeamRole : role
+  checklist --> checklistStatus : checklistStatus
+  checklistTask --> checklistTaskStatus : taskStatus
+  checklistColumn --> checklistColumnType : columnType

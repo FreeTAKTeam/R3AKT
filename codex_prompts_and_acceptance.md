@@ -53,6 +53,8 @@ Each section is intended to be fed directly to Codex as a self-contained task ba
   - AC: Incoming LXMF messages decoded and normalized.
 - **Egress**
   - AC: Outgoing messages sent and ACKs tracked.
+- **AsyncAPI contracts**
+  - AC: LXMF command/event channels and message schemas are documented and validated in AsyncAPI.
 - **Metadata extraction**
   - AC: Sender identity, timestamp, and correlation ID captured.
 - **Propagation compatibility**
@@ -143,6 +145,8 @@ Each section is intended to be fed directly to Codex as a self-contained task ba
   - AC: Capabilities defined and versioned.
 - **Admin enforcement**
   - AC: Only admin identities modify capabilities.
+- **Command authorization**
+  - AC: Every command is explicitly checked against identity capabilities before execution.
 - **Revocation**
   - AC: Revoked identities are blackholed.
 - **Audit**
@@ -172,7 +176,7 @@ Each section is intended to be fed directly to Codex as a self-contained task ba
 
 ### Codex Prompt
 > Implement the FastAPI control plane strictly from OpenAPI contracts.  
-> HTTP is administrative; LXMF remains authoritative.
+> HTTP is administrative; AsyncAPI remains authoritative for LXMF interactions.
 
 ### Tasks & Acceptance Criteria
 - **OpenAPI compliance**
@@ -180,7 +184,7 @@ Each section is intended to be fed directly to Codex as a self-contained task ba
 - **Admin endpoints**
   - AC: Health, identities, capabilities, topics, retention, audit work.
 - **Mapping**
-  - AC: HTTP commands translate to LXMF commands.
+  - AC: HTTP commands translate to AsyncAPI-defined LXMF commands.
 - **Validation**
   - AC: Schema validation enforced.
 

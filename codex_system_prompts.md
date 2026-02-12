@@ -21,8 +21,11 @@ Each prompt can be used as:
 > Core invariants:
 > - Event-centric architecture (immutable events, mutable derived state)
 > - Reticulum + LXMF are authoritative transports
+> - AsyncAPI is authoritative for Reticulum/LXMF interactions
+> - OpenAPI is authoritative for northbound HTTP APIs
 > - Asynchronous, offline-first, conflict-tolerant design
 > - Propagation nodes are used for store-and-forward
+> - Every command requires explicit capability authorization
 > - No global consistency assumptions
 >
 > If information is missing or ambiguous:
@@ -177,6 +180,7 @@ Each prompt can be used as:
 >
 > Required:
 > - Enforcement at ingress
+> - Explicit capability authorization on every command
 > - Audit logging
 >
 > Forbidden:
@@ -209,7 +213,8 @@ Each prompt can be used as:
 > Implement FastAPI control-plane APIs.
 >
 > Constraints:
-> - OpenAPI is authoritative
+> - OpenAPI is authoritative for HTTP APIs only
+> - AsyncAPI is authoritative for Reticulum/LXMF interactions
 > - HTTP is administrative only
 >
 > Required:

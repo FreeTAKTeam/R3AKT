@@ -1,15 +1,15 @@
 # Project Structure
 
-This repo is organized as a monorepo with deployable services, clients, and shared packages.
+This repo is organized as a monorepo with a hybrid backend: a core modular monolith plus deployable auxiliary services.
 
 ```
 apps/                         # User-facing clients
-  server/                     # Backend app shell (FastAPI/WebSocket entrypoint)
+  server/                     # Core runtime host (modular monolith + northbound HTTP entrypoint)
   web/                        # Browser UI (SPA)
   desktop/                    # Electron wrapper for the web client
   mobile-android/             # Android client app
-services/                     # Backend microservices
-  core-api/                   # Mission/entity/alert APIs
+services/                     # Auxiliary and optionally extracted backend services
+  core-api/                   # Optional extracted APIs (default is in-process in apps/server)
   telemetry-adapter/          # Reticulum Telemetry Hub ingestion
   lxmf-gateway/               # LXMF send/receive service
   plugin-runtime/             # Plugin lifecycle + runtime
@@ -17,7 +17,7 @@ services/                     # Backend microservices
     home-assistant/           # Home Assistant integration service
 packages/                     # Shared libraries
   r3akt-core/                 # Domain models, services, facades
-  r3akt-protocol/             # REST/WebSocket message envelopes
+  r3akt-protocol/             # Shared protocol models (AsyncAPI LXMF + OpenAPI HTTP mapping)
   r3akt-schemas/              # JSON schemas for commands and domain objects
 configs/                      # Example configs and templates
   reticulum/                  # RNS interface configs
@@ -25,6 +25,7 @@ configs/                      # Example configs and templates
   logging/                    # Logging/metrics configs
 docs/                         # Specs and design docs
   architecture/               # Architecture notes and diagrams
+    asyncapi/                 # Reticulum/LXMF contracts (authoritative for mesh interactions)
   requirements/               # Requirements and planning
   adr/                        # Architecture decision records
 infra/                        # Deployment artifacts
@@ -37,5 +38,6 @@ tests/                        # Cross-service tests
 
 Notes:
 - Use `apps/` for user-facing clients and entrypoints.
-- Use `services/` for independently deployable backend processes.
+- Keep core bounded contexts inside `apps/server` by default; extract only when operationally justified.
+- Use `services/` for independently deployable auxiliary processes and optional extracted services.
 - Put reusable code in `packages/` to keep service boundaries clean.
