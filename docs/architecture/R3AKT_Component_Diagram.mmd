@@ -8,7 +8,11 @@ flowchart TB
 
   subgraph Core["R3AKT Core (Python Modular Monolith)"]
     LXMF[LXMF Ingress/Egress]
-    TOPICS[Topics & Subscriptions]
+    CMD[Command Router\nFIELD_COMMANDS 0x09]
+    RES[Command Reply Builder\nFIELD_RESULTS 0x0A]
+    EVIN[Event Ingestor\nFIELD_EVENT 0x0D]
+    EVPUB[Event Publisher\nFIELD_EVENT 0x0D]
+    TOPICS[Topics & Subscriptions\nFIELD_GROUP 0x0B]
     CAPS[Capabilities & Security]
     EVLOG[Event Store\n(retention)]
     STATE[Derived State Cache\n(confidence)]
@@ -22,24 +26,44 @@ flowchart TB
     AGT[Agent Runtime]
   end
 
-  C1 -->|LXMF events/commands| LXMF
-  C2 -->|LXMF events/commands| LXMF
-  C3 -->|LXMF events/commands| LXMF
-  C4 -->|LXMF events| LXMF
+  C1 -->|Command request\n0x09| LXMF
+  C2 -->|Command request\n0x09| LXMF
+  C3 -->|Command request\n0x09| LXMF
+  C1 -->|Event publication\n0x0D| LXMF
+  C2 -->|Event publication\n0x0D| LXMF
+  C3 -->|Event publication\n0x0D| LXMF
+  C4 -->|Event publication\n0x0D| LXMF
 
-  LXMF --> TOPICS
-  LXMF --> CAPS
-  LXMF --> EVLOG
+  LXMF --> CMD
+  LXMF --> EVIN
+  CMD --> CAPS
+  CAPS --> RES
+  EVIN --> EVLOG
+  TOPICS --> EVPUB
   EVLOG --> STATE
+  EVLOG --> EVPUB
+  RES --> LXMF
+  EVPUB --> LXMF
   CAPS --> AUDIT
   TOPICS --> AUDIT
   EVLOG --> AUDIT
+  RES --> AUDIT
 
-  Core -->|LXMF event streams| ANA
-  Core -->|LXMF event streams| COT
-  Core -->|LXMF event streams| MESH
-  Core -->|LXMF event streams| AGT
+  ANA -->|Command request\n0x09| LXMF
+  COT -->|Command request\n0x09| LXMF
+  MESH -->|Command request\n0x09| LXMF
+  AGT -->|Command request\n0x09| LXMF
 
-  LXMF -->|capability+topic filtered| C1
-  LXMF -->|capability+topic filtered| C2
-  LXMF -->|capability+topic filtered| C3
+  EVPUB -->|Event stream\n0x0D| ANA
+  EVPUB -->|Event stream\n0x0D| COT
+  EVPUB -->|Event stream\n0x0D| MESH
+  EVPUB -->|Event stream\n0x0D| AGT
+
+  LXMF -->|Command outcome\n0x0A| C1
+  LXMF -->|Command outcome\n0x0A| C2
+  LXMF -->|Command outcome\n0x0A| C3
+
+  LXMF -->|Event stream 0x0D\n+ group/topic metadata 0x0B| C1
+  LXMF -->|Event stream 0x0D\n+ group/topic metadata 0x0B| C2
+  LXMF -->|Event stream 0x0D\n+ group/topic metadata 0x0B| C3
+  LXMF -->|Event stream 0x0D\n+ group/topic metadata 0x0B| C4

@@ -20,9 +20,19 @@ servers:
         propagation_nodes: supported
         encryption: reticulum-e2e
         signature: required
+        field_constants:
+          FIELD_COMMANDS: "0x09"
+          FIELD_RESULTS: "0x0A"
+          FIELD_GROUP: "0x0B"
+          FIELD_EVENT: "0x0D"
 channels:
   r3akt.gateway.commands:
-    description: Gateway management commands.
+    description: Gateway management commands (`FIELD_COMMANDS` / `0x09`).
+    x-lxmf-fields:
+      required:
+        - FIELD_COMMANDS
+      optional:
+        - FIELD_GROUP
     publish:
       operationId: publishGatewayCommand
       description: Every command is explicitly authorized against caller capabilities.
@@ -34,7 +44,12 @@ channels:
           - $ref: "#/components/messages/MeshtasticLinksListCommand"
           - $ref: "#/components/messages/MeshtasticConfigSetCommand"
   r3akt.gateway.replies:
-    description: ACK, reject, and result messages for gateway commands.
+    description: ACK, reject, and result messages for gateway commands (`FIELD_RESULTS` / `0x0A`).
+    x-lxmf-fields:
+      required:
+        - FIELD_RESULTS
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeGatewayReplies
       message:
@@ -43,7 +58,12 @@ channels:
           - $ref: "#/components/messages/CommandRejected"
           - $ref: "#/components/messages/CommandResult"
   r3akt.gateway.events:
-    description: Gateway-translated events and bridge lifecycle events.
+    description: Gateway-translated events and bridge lifecycle events (`FIELD_EVENT` / `0x0D`).
+    x-lxmf-fields:
+      required:
+        - FIELD_EVENT
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeGatewayEvents
       message:
@@ -143,6 +163,7 @@ components:
     CommandAccepted:
       name: CommandAccepted
       title: Command accepted
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, accepted_at]
@@ -160,6 +181,7 @@ components:
     CommandRejected:
       name: CommandRejected
       title: Command rejected
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, reason_code]
@@ -179,6 +201,7 @@ components:
     CommandResult:
       name: CommandResult
       title: Command result
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, result]
@@ -197,6 +220,7 @@ components:
       name: GatewayEvent
       title: Gateway event envelope
       summary: Uses the shared event envelope with gateway-specific event_type values.
+      x-lxmf-field: FIELD_EVENT
       payload:
         allOf:
           - $ref: "../schemas/event.json"

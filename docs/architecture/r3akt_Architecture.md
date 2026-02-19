@@ -15,7 +15,8 @@ Components (to be refined into diagrams):
   * Connects to Reticulum Telemetry Hub, normalizes streams.
 * LXMF Gateway
 
-  * Implements AsyncAPI-defined Reticulum/LXMF command and event flows.
+  * Implements AsyncAPI-defined Reticulum/LXMF command, result, and event flows.
+  * Enforces LXMF field semantics (`FIELD_COMMANDS` 0x09, `FIELD_RESULTS` 0x0A, `FIELD_EVENT` 0x0D, optional `FIELD_GROUP` 0x0B).
 * R3AKT Core API
 
   * REST + WebSocket server implementing SA logic, mission model, entities, alerts, replay.
@@ -325,7 +326,8 @@ Each domain object is transported as a single **LXMF message**:
 
 * Destination: the publishing `r3akt.space.*`
 * Content: JSON object envelope
-* Fields: MAY include compression or schema hints
+* Fields: event facts use `FIELD_EVENT` (0x0D); topic/group fan-out MAY use `FIELD_GROUP` (0x0B)
+* Additional fields MAY include compression or schema hints
 
 No request/response semantics are assumed.
 
@@ -430,10 +432,15 @@ Core services are provided by the R3AKT core runtime. Reticulum Telemetry Hub is
 ### LXMF Service
 
 * Receives LXMF messages
-* Extracts command and request ID
+* Classifies payloads by LXMF fields:
+  * command request: `FIELD_COMMANDS` (0x09)
+  * command outcome: `FIELD_RESULTS` (0x0A)
+  * event fact: `FIELD_EVENT` (0x0D)
+  * optional fan-out scope metadata: `FIELD_GROUP` (0x0B)
 * Validates payload against schema
-* Dispatches to controller
-* Returns idempotent response
+* Dispatches commands to authorized controllers
+* Persists and fans out immutable events
+* Builds idempotent command replies/results
 
 ### HTTP Service Northbound
 

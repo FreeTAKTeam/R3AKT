@@ -16,6 +16,8 @@ ASYNCAPI_FILES = [
     "docs/architecture/asyncapi/r3akt-analytics-lxmf.asyncapi.yaml",
     "docs/architecture/asyncapi/r3akt-gateway-lxmf.asyncapi.yaml",
     "docs/architecture/asyncapi/r3akt-agent-runtime-lxmf.asyncapi.yaml",
+    "docs/architecture/asyncapi/r3akt-checklist-lxmf.asyncapi.yaml",
+    "docs/architecture/asyncapi/r3akt-mission-sync-lxmf.asyncapi.yaml",
 ]
 
 
@@ -41,6 +43,16 @@ class TestAsyncAPIContracts(unittest.TestCase):
                 "r3akt.agent.commands",
                 "r3akt.agent.replies",
                 "r3akt.agent.events",
+            ),
+            "docs/architecture/asyncapi/r3akt-checklist-lxmf.asyncapi.yaml": (
+                "r3akt.checklist.commands",
+                "r3akt.checklist.replies",
+                "r3akt.checklist.events",
+            ),
+            "docs/architecture/asyncapi/r3akt-mission-sync-lxmf.asyncapi.yaml": (
+                "r3akt.mission.commands",
+                "r3akt.mission.replies",
+                "r3akt.mission.events",
             ),
         }
 

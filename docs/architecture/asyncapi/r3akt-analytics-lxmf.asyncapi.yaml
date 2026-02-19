@@ -20,9 +20,19 @@ servers:
         propagation_nodes: supported
         encryption: reticulum-e2e
         signature: required
+        field_constants:
+          FIELD_COMMANDS: "0x09"
+          FIELD_RESULTS: "0x0A"
+          FIELD_GROUP: "0x0B"
+          FIELD_EVENT: "0x0D"
 channels:
   r3akt.analytics.commands:
-    description: Commands sent to the analytics service.
+    description: Commands sent to the analytics service (`FIELD_COMMANDS` / `0x09`).
+    x-lxmf-fields:
+      required:
+        - FIELD_COMMANDS
+      optional:
+        - FIELD_GROUP
     publish:
       operationId: publishAnalyticsCommand
       summary: Submit analytics command envelopes.
@@ -33,7 +43,12 @@ channels:
           - $ref: "#/components/messages/AnalyticsJobGetCommand"
           - $ref: "#/components/messages/AnalyticsReportGetCommand"
   r3akt.analytics.replies:
-    description: Acknowledgement, rejection, and result messages for analytics commands.
+    description: Acknowledgement, rejection, and result messages for analytics commands (`FIELD_RESULTS` / `0x0A`).
+    x-lxmf-fields:
+      required:
+        - FIELD_RESULTS
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeAnalyticsReplies
       message:
@@ -42,7 +57,12 @@ channels:
           - $ref: "#/components/messages/CommandRejected"
           - $ref: "#/components/messages/CommandResult"
   r3akt.analytics.events:
-    description: Analytics lifecycle events and report-ready notifications.
+    description: Analytics lifecycle events and report-ready notifications (`FIELD_EVENT` / `0x0D`).
+    x-lxmf-fields:
+      required:
+        - FIELD_EVENT
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeAnalyticsEvents
       message:
@@ -123,6 +143,7 @@ components:
     CommandAccepted:
       name: CommandAccepted
       title: Command accepted
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, accepted_at]
@@ -140,6 +161,7 @@ components:
     CommandRejected:
       name: CommandRejected
       title: Command rejected
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, reason_code]
@@ -159,6 +181,7 @@ components:
     CommandResult:
       name: CommandResult
       title: Command result
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, result]
@@ -177,6 +200,7 @@ components:
       name: AnalyticsEvent
       title: Analytics event envelope
       summary: Uses the shared event envelope with analytics-specific event_type values.
+      x-lxmf-field: FIELD_EVENT
       payload:
         allOf:
           - $ref: "../schemas/event.json"

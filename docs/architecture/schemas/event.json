@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://r3akt.local/schema/event.json",
   "title": "R3AKTEvent",
+  "description": "Immutable event/fact envelope. Transport class is LXMF FIELD_EVENT (0x0D).",
   "type": "object",
   "required": [
     "event_id",
@@ -40,7 +41,8 @@
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Event fan-out topics. May be mirrored in LXMF FIELD_GROUP (0x0B) metadata."
     },
     "confidence": {
       "type": "number",
@@ -69,7 +71,8 @@
       "type": "object"
     },
     "meta": {
-      "type": "object"
+      "type": "object",
+      "description": "Supplemental event metadata that does not alter the immutable event fact."
     }
   }
 }

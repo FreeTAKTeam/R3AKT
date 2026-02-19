@@ -20,9 +20,19 @@ servers:
         propagation_nodes: supported
         encryption: reticulum-e2e
         signature: required
+        field_constants:
+          FIELD_COMMANDS: "0x09"
+          FIELD_RESULTS: "0x0A"
+          FIELD_GROUP: "0x0B"
+          FIELD_EVENT: "0x0D"
 channels:
   r3akt.agent.commands:
-    description: Agent runtime management commands.
+    description: Agent runtime management commands (`FIELD_COMMANDS` / `0x09`).
+    x-lxmf-fields:
+      required:
+        - FIELD_COMMANDS
+      optional:
+        - FIELD_GROUP
     publish:
       operationId: publishAgentCommand
       description: Every command is explicitly authorized against caller capabilities.
@@ -33,7 +43,12 @@ channels:
           - $ref: "#/components/messages/AgentStartCommand"
           - $ref: "#/components/messages/AgentStopCommand"
   r3akt.agent.replies:
-    description: ACK, reject, and result messages for agent commands.
+    description: ACK, reject, and result messages for agent commands (`FIELD_RESULTS` / `0x0A`).
+    x-lxmf-fields:
+      required:
+        - FIELD_RESULTS
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeAgentReplies
       message:
@@ -42,7 +57,12 @@ channels:
           - $ref: "#/components/messages/CommandRejected"
           - $ref: "#/components/messages/CommandResult"
   r3akt.agent.events:
-    description: Agent runtime lifecycle and policy events.
+    description: Agent runtime lifecycle and policy events (`FIELD_EVENT` / `0x0D`).
+    x-lxmf-fields:
+      required:
+        - FIELD_EVENT
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeAgentEvents
       message:
@@ -141,6 +161,7 @@ components:
     CommandAccepted:
       name: CommandAccepted
       title: Command accepted
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, accepted_at]
@@ -158,6 +179,7 @@ components:
     CommandRejected:
       name: CommandRejected
       title: Command rejected
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, reason_code]
@@ -177,6 +199,7 @@ components:
     CommandResult:
       name: CommandResult
       title: Command result
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, result]
@@ -195,6 +218,7 @@ components:
       name: AgentRuntimeEvent
       title: Agent runtime event envelope
       summary: Uses the shared event envelope with agent-runtime-specific event_type values.
+      x-lxmf-field: FIELD_EVENT
       payload:
         allOf:
           - $ref: "../schemas/event.json"

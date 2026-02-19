@@ -24,9 +24,19 @@ servers:
         propagation_nodes: supported
         encryption: reticulum-e2e
         signature: required
+        field_constants:
+          FIELD_COMMANDS: "0x09"
+          FIELD_RESULTS: "0x0A"
+          FIELD_GROUP: "0x0B"
+          FIELD_EVENT: "0x0D"
 channels:
   r3akt.core.commands:
-    description: Commands submitted to core over LXMF.
+    description: Commands submitted to core over LXMF (`FIELD_COMMANDS` / `0x09`).
+    x-lxmf-fields:
+      required:
+        - FIELD_COMMANDS
+      optional:
+        - FIELD_GROUP
     publish:
       operationId: publishCoreCommand
       summary: Send a command envelope to the core node.
@@ -48,7 +58,12 @@ channels:
           - $ref: "#/components/messages/RetentionSetPolicyCommand"
           - $ref: "#/components/messages/AuditSearchCommand"
   r3akt.core.replies:
-    description: Acknowledgement, rejection, and result envelopes for commands.
+    description: Acknowledgement, rejection, and result envelopes for commands (`FIELD_RESULTS` / `0x0A`).
+    x-lxmf-fields:
+      required:
+        - FIELD_RESULTS
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeCoreReplies
       summary: Receive command execution replies from core.
@@ -58,7 +73,12 @@ channels:
           - $ref: "#/components/messages/CommandRejected"
           - $ref: "#/components/messages/CommandResult"
   r3akt.core.events:
-    description: Event stream and snapshots distributed by core.
+    description: Event stream and snapshots distributed by core (`FIELD_EVENT` / `0x0D`).
+    x-lxmf-fields:
+      required:
+        - FIELD_EVENT
+      optional:
+        - FIELD_GROUP
     subscribe:
       operationId: subscribeCoreEvents
       summary: Receive filtered events based on capability and topic policies.
@@ -358,6 +378,7 @@ components:
     CommandAccepted:
       name: CommandAccepted
       title: Command accepted
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, accepted_at]
@@ -377,6 +398,7 @@ components:
     CommandRejected:
       name: CommandRejected
       title: Command rejected
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, reason_code]
@@ -400,6 +422,7 @@ components:
     CommandResult:
       name: CommandResult
       title: Command result
+      x-lxmf-field: FIELD_RESULTS
       payload:
         type: object
         required: [command_id, status, result]
@@ -417,16 +440,19 @@ components:
     CoreEvent:
       name: CoreEvent
       title: Core event envelope
+      x-lxmf-field: FIELD_EVENT
       payload:
         $ref: "../schemas/event.json"
     TopicSnapshot:
       name: TopicSnapshot
       title: Topic snapshot
+      x-lxmf-field: FIELD_EVENT
       payload:
         $ref: "../schemas/topic.json"
     DomainObjectSnapshot:
       name: DomainObjectSnapshot
       title: Derived domain object snapshot
+      x-lxmf-field: FIELD_EVENT
       payload:
         $ref: "../schemas/object.json"
   schemas:

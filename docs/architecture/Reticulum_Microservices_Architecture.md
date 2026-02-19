@@ -117,24 +117,43 @@ Announce payload encoding is application-defined and opaque to Reticulum.
 * All messages are transported using **LXMF**.
 * Messages are encrypted and authenticated via Reticulum identities.
 
+### 8.1.1 LXMF Field Binding (Normative)
+
+| Semantic class | Required LXMF field | Hex | Notes |
+|---|---|---|---|
+| Command intent | `FIELD_COMMANDS` | `0x09` | Action/request envelopes only |
+| Command outcomes (`accepted`, `rejected`, `result`) | `FIELD_RESULTS` | `0x0A` | Reply lifecycle for commands |
+| Events and immutable fact snapshots | `FIELD_EVENT` | `0x0D` | Event-plane facts only |
+| Group/topic scope metadata | `FIELD_GROUP` | `0x0B` | Optional; MAY accompany any class |
+
+Normative rules:
+
+* A command MUST include `FIELD_COMMANDS` and MUST NOT be classified as an event.
+* A command reply MUST include `FIELD_RESULTS` and correlate to the originating command identifier.
+* An event MUST include `FIELD_EVENT` and MUST NOT carry command intent.
+* `FIELD_GROUP` MAY be used for topic/group fan-out metadata, but MUST NOT define message class.
+
 ### 8.2 Message Categories
 
 #### Commands (Control Plane)
 
 * Intentional requests to perform an action
 * MAY result in one or more events
+* MUST be encoded as `FIELD_COMMANDS` (`0x09`)
 
 #### Events (Control Plane)
 
 * Facts indicating something has occurred
 * Emitted asynchronously
 * MUST be immutable
+* MUST be encoded as `FIELD_EVENT` (`0x0D`)
 
 #### Domain Assertions (Data Plane)
 
 * Published representations of domain state or observations
 * Append-only semantics
 * No request/response assumptions
+* SHOULD use `FIELD_EVENT` (`0x0D`) when assertions are distributed as immutable facts
 
 ---
 
@@ -212,6 +231,7 @@ An implementation is compliant with this specification if it:
 
 * Uses Reticulum for addressing and routing
 * Uses LXMF for all inter-service messaging
+* Enforces field-level command/result/event distinction using `FIELD_COMMANDS` (`0x09`), `FIELD_RESULTS` (`0x0A`), and `FIELD_EVENT` (`0x0D`)
 * Advertises services exclusively via announces
 * Publishes and adheres to AsyncAPI contracts
 * Enforces explicit capability authorization on every command

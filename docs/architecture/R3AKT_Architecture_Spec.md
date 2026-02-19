@@ -1,7 +1,7 @@
 # R3AKT Architecture Specification (Interview-Derived)
 
-**Version:** 0.2  
-**Date:** 2026-02-06  
+**Version:** 0.3  
+**Date:** 2026-02-17  
 **Scope:** R3AKT server architecture (core + auxiliary services) for Reticulum/LXMF situational awareness.
 **Status:** Canonical implementation baseline.
 
@@ -70,10 +70,26 @@ Domain objects are identified using a Nomadnet-inspired structure:
 ### 4.2 Commands vs events
 - Commands and events are separate message classes.
 - Commands use synchronous semantics (request/ack/result) over an asynchronous transport.
+- Commands MUST be carried as LXMF `FIELD_COMMANDS` (`0x09`) payloads.
+- Command acknowledgements/rejections/results MUST be carried as LXMF `FIELD_RESULTS` (`0x0A`) payloads.
+- Events MUST be carried as LXMF `FIELD_EVENT` (`0x0D`) payloads and remain immutable facts.
 - Every command MUST pass explicit capability authorization before execution; unauthorized commands are rejected and audited.
 
 ### 4.3 Transport
 - Authoritative transport: **LXMF over Reticulum**.
+
+### 4.3.1 LXMF field profile
+
+| Semantic class | Required LXMF field | Hex | Notes |
+|---|---|---|---|
+| Command request | `FIELD_COMMANDS` | `0x09` | Action intent only |
+| Command outcome (`accepted`/`rejected`/`result`) | `FIELD_RESULTS` | `0x0A` | Reply lifecycle for commands |
+| Event/fact publication | `FIELD_EVENT` | `0x0D` | Event-plane facts and snapshots |
+| Topic/group scope metadata | `FIELD_GROUP` | `0x0B` | Optional alongside command/result/event |
+
+Rules:
+- `FIELD_GROUP` scopes fan-out and topic targeting but MUST NOT be used to classify a message as command or event.
+- A message MUST NOT carry both command intent and event fact semantics.
 
 ### 4.4 Delivery and back-pressure
 - Delivery is treated as **at-least-once** (ACK-based; tentative).
@@ -100,7 +116,7 @@ The core monolith owns:
 - Capability enforcement and security checks
 
 ### 5.3 Auxiliary services
-Auxiliary services interact with the core via **event-based messaging over Reticulum/LXMF** and own their own storage:
+Auxiliary services interact with the core via **command, result, and event messaging over Reticulum/LXMF** and own their own storage:
 - Analytics / aggregation engine
 - ATAK / CoT gateway
 - AI / automated agents runtime (publication + analytics only)
@@ -180,7 +196,7 @@ Auxiliary services interact with the core via **event-based messaging over Retic
 | DL-36 | Server decomposition | Hybrid: core monolith + auxiliary services. |
 | DL-37 | Core responsibilities | LXMF ingress/egress; event persistence/retention; topic/subscriptions; capability/security enforcement. |
 | DL-38 | Aux services | Analytics; ATAK/CoT gateway; AI/agents runtime; Meshtastic gateway. |
-| DL-39 | Service coupling | Event-based messaging over Reticulum/LXMF. |
+| DL-39 | Service coupling | Command/result/event messaging over Reticulum/LXMF. |
 | DL-40 | Persistence ownership | Each service owns its own storage. |
 | DL-41 | Core deployment | Multiprocessing on a single node. |
 | DL-42 | Tech constraint | Python primary for core; other languages allowed for aux services. |
@@ -202,3 +218,5 @@ Auxiliary services interact with the core via **event-based messaging over Retic
 | DL-58 | Contract authority | AsyncAPI is authoritative for Reticulum/LXMF interactions; OpenAPI is authoritative for HTTP APIs. |
 | DL-59 | Tooling | VS Code + Codex; Sparx EA; Markdown. |
 | DL-60 | Automation | Code + model generation. |
+| DL-61 | LXMF class binding | Command request=`FIELD_COMMANDS` (`0x09`), command outcome=`FIELD_RESULTS` (`0x0A`), event fact=`FIELD_EVENT` (`0x0D`). |
+| DL-62 | Group metadata | `FIELD_GROUP` (`0x0B`) is optional fan-out/topic scope metadata and never a command/event discriminator. |

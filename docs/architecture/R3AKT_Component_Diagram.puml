@@ -10,7 +10,11 @@ package "Clients" {
 
 package "R3AKT Core (Python Modular Monolith)" {
   [LXMF Ingress/Egress] as LXMF
-  [Topics & Subscriptions] as TOP
+  [Command Router\nFIELD_COMMANDS 0x09] as CMD
+  [Command Reply Builder\nFIELD_RESULTS 0x0A] as RES
+  [Event Ingestor\nFIELD_EVENT 0x0D] as EVI
+  [Event Publisher\nFIELD_EVENT 0x0D] as EVP
+  [Topics & Subscriptions\nFIELD_GROUP 0x0B] as TOP
   [Capabilities & Security] as CAP
   database "Event Store\n(retention)" as EV
   [Derived State Cache\n(confidence)] as ST
@@ -24,21 +28,41 @@ package "Auxiliary Services" {
   [Agent Runtime] as AGT
 }
 
-C1 --> LXMF
-C2 --> LXMF
-C3 --> LXMF
-C4 --> LXMF
+C1 --> LXMF : commands (0x09)
+C2 --> LXMF : commands (0x09)
+C3 --> LXMF : commands (0x09)
+C1 --> LXMF : events (0x0D)
+C2 --> LXMF : events (0x0D)
+C3 --> LXMF : events (0x0D)
+C4 --> LXMF : events (0x0D)
 
-LXMF --> TOP
-LXMF --> CAP
-LXMF --> EV
+LXMF --> CMD
+LXMF --> EVI
+CMD --> CAP
+CAP --> RES
+EVI --> EV
 EV --> ST
+EV --> EVP
+TOP --> EVP
+RES --> LXMF : command outcomes (0x0A)
+EVP --> LXMF : event stream (0x0D)
 CAP --> AU
 TOP --> AU
 EV --> AU
+RES --> AU
 
-LXMF --> ANA
-LXMF --> COT
-LXMF --> MESH
-LXMF --> AGT
+ANA --> LXMF : commands (0x09)
+COT --> LXMF : commands (0x09)
+MESH --> LXMF : commands (0x09)
+AGT --> LXMF : commands (0x09)
+
+EVP --> ANA : events (0x0D)
+EVP --> COT : events (0x0D)
+EVP --> MESH : events (0x0D)
+EVP --> AGT : events (0x0D)
+
+LXMF --> C1 : outcomes (0x0A), events (0x0D), group/topic metadata (0x0B)
+LXMF --> C2 : outcomes (0x0A), events (0x0D), group/topic metadata (0x0B)
+LXMF --> C3 : outcomes (0x0A), events (0x0D), group/topic metadata (0x0B)
+LXMF --> C4 : events (0x0D), group/topic metadata (0x0B)
 @enduml
