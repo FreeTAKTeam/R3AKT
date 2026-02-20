@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RCH Mission Control - Create Mission Wizard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102222",
+                        "surface-dark": "#1a2e2e",
+                        "border-dark": "#234848",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(19, 236, 236, 0.2);
+        }
+        .scan-line {
+            background: linear-gradient(to right, transparent, #13ecec, transparent);
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen overflow-x-hidden">
+<!-- Background Layer (Blurred Mission List) -->
+<div class="fixed inset-0 z-0 opacity-20 blur-sm pointer-events-none px-40 py-5">
+<div class="flex flex-col gap-6">
+<div class="h-20 bg-border-dark rounded-lg w-full"></div>
+<div class="h-40 bg-border-dark rounded-lg w-full"></div>
+<div class="h-40 bg-border-dark rounded-lg w-full"></div>
+</div>
+</div>
+<div class="relative z-10 flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark px-10 py-3 bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">RCH Mission Control</h2>
+</div>
+<div class="flex items-center gap-9">
+<a class="text-white/60 hover:text-primary text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-primary text-sm font-medium" href="#">Missions</a>
+<a class="text-white/60 hover:text-primary text-sm font-medium transition-colors" href="#">Nodes</a>
+<a class="text-white/60 hover:text-primary text-sm font-medium transition-colors" href="#">Telemetry</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6">
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden">
+<div class="text-[#92c9c9] flex bg-border-dark items-center justify-center pl-4">
+<span class="material-symbols-outlined text-sm">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-border-dark text-white focus:ring-0 h-full placeholder:text-[#92c9c9] px-2 text-sm font-normal" placeholder="Search reticulum network..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-border-dark/70 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-border-dark/70 transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-primary/50" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbTFETbkZWL3x25YtfBw6GmE6MrMzA646r-m_EZQWHzXS4k437b0sJ5rJewtpWagaDrZdSOSUtmbjGE5eRLxWFshI7gGGX92Kj6yZ0irkmyEaZarI_nkLxWZTJrITm5En5l6iYSWWSQij3PSWW_QQR70H5Ezc3bD1wOEsxDEdctej5vM8uNE4i6ny_S7kEZOupE1JRV_ZWs9DjLcWY6jxJlJkd3fGIuXaqdxitFCWjNt3QzTbKi7zjDFmqgU6D_zhF7G_hh4yPSA");'></div>
+</div>
+</header>
+<!-- Main Content Area (Wizard Modal) -->
+<main class="flex-1 flex justify-center items-center py-10 px-4">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full bg-surface-dark border border-border-dark rounded-xl shadow-2xl overflow-hidden glow-cyan">
+<!-- Wizard Progress Bar -->
+<div class="bg-background-dark/50 px-8 pt-6 pb-2">
+<div class="flex flex-wrap gap-2 pb-4">
+<a class="text-primary/60 text-xs font-medium uppercase tracking-widest" href="#">Missions</a>
+<span class="text-white/20 text-xs font-medium">/</span>
+<span class="text-white text-xs font-medium uppercase tracking-widest">Create Mission Wizard</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex gap-6 justify-between items-end">
+<div>
+<h1 class="text-white text-2xl font-black leading-tight tracking-tight">Step 2: Topic Binding &amp; Federation</h1>
+<p class="text-[#92c9c9] text-sm font-normal mt-1">Define the hierarchical telemetry scope and node federation permissions.</p>
+</div>
+<p class="text-primary text-sm font-bold leading-normal">50% Complete</p>
+</div>
+<div class="rounded-full bg-border-dark h-1.5 w-full mt-2 overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 50%;"></div>
+</div>
+</div>
+</div>
+<!-- Wizard Steps Scrollable Area -->
+<div class="p-8 flex flex-col gap-8 max-h-[60vh] overflow-y-auto">
+<!-- Hierarchical Topic Builder Section -->
+<section class="flex flex-col gap-6">
+<div class="flex items-center gap-2 border-b border-border-dark pb-3">
+<span class="material-symbols-outlined text-primary text-xl">account_tree</span>
+<h2 class="text-white text-lg font-bold">Hierarchical Topic Builder</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-[#92c9c9] text-xs font-bold uppercase tracking-tighter">Region</label>
+<select class="bg-background-dark border border-border-dark rounded-lg text-white text-sm focus:ring-primary focus:border-primary">
+<option>North America (na)</option>
+<option>Europe (eu)</option>
+<option>Asia Pacific (ap)</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#92c9c9] text-xs font-bold uppercase tracking-tighter">Country/State</label>
+<select class="bg-background-dark border border-border-dark rounded-lg text-white text-sm focus:ring-primary focus:border-primary">
+<option>California (ca)</option>
+<option>Texas (tx)</option>
+<option>New York (ny)</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#92c9c9] text-xs font-bold uppercase tracking-tighter">Namespace</label>
+<select class="bg-background-dark border border-border-dark rounded-lg text-white text-sm focus:ring-primary focus:border-primary">
+<option>Public Safety (ps)</option>
+<option>Network Ops (ns)</option>
+<option>Civil (civ)</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#92c9c9] text-xs font-bold uppercase tracking-tighter">Sub-Topic</label>
+<input class="bg-background-dark border border-border-dark rounded-lg text-white text-sm focus:ring-primary focus:border-primary" placeholder="Enter topic..." type="text" value="flood"/>
+</div>
+</div>
+<!-- Live Preview Panel -->
+<div class="relative bg-background-dark p-6 rounded-lg border border-primary/30 overflow-hidden">
+<div class="scan-line"></div>
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-col gap-1 w-full md:w-auto">
+<span class="text-primary text-[10px] font-bold uppercase tracking-[0.2em]">Constructed Topic Path</span>
+<code class="text-xl font-mono text-white bg-surface-dark/50 px-3 py-1 rounded border border-border-dark">na.ca.ns.flood.*</code>
+</div>
+<div class="flex items-center gap-4 bg-surface-dark px-6 py-3 rounded-xl border border-border-dark w-full md:w-auto">
+<div class="relative">
+<div class="size-3 bg-primary rounded-full animate-pulse"></div>
+<div class="absolute inset-0 size-3 bg-primary rounded-full animate-ping opacity-40"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-white leading-none">142</span>
+<span class="text-[#92c9c9] text-[10px] uppercase font-medium">Active Nodes</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Federation Settings Section -->
+<section class="flex flex-col gap-6">
+<div class="flex items-center gap-2 border-b border-border-dark pb-3">
+<span class="material-symbols-outlined text-primary text-xl">hub</span>
+<h2 class="text-white text-lg font-bold">Node Federation Permissions</h2>
+</div>
+<div class="flex items-center justify-between p-4 bg-background-dark rounded-lg border border-border-dark group hover:border-primary/50 transition-colors">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">Enable Multi-Node Federation</span>
+<span class="material-symbols-outlined text-[#92c9c9] text-sm cursor-help" title="Allows external RCH nodes to join this context for global scale telemetry.">info</span>
+</div>
+<p class="text-[#92c9c9] text-xs">Allow discovery and announcements from untrusted peers across the Reticulum mesh.</p>
+</div>
+<!-- Cyan Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-border-dark peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-[#92c9c9] text-xs font-bold uppercase tracking-tighter">Security Level</label>
+<select class="bg-background-dark border border-border-dark rounded-lg text-white text-sm focus:ring-primary focus:border-primary">
+<option>L1 - Public (Announced)</option>
+<option selected="">L2 - Signed Requests Only</option>
+<option>L3 - Private (Encryption Required)</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#92c9c9] text-xs font-bold uppercase tracking-tighter">Peer Discovery</label>
+<select class="bg-background-dark border border-border-dark rounded-lg text-white text-sm focus:ring-primary focus:border-primary">
+<option>All Mesh Nodes</option>
+<option selected="">Only Known Peers</option>
+<option>Manual Invitation Only</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Navigation -->
+<div class="flex items-center justify-between p-6 bg-background-dark/80 border-t border-border-dark">
+<button class="px-6 py-2 text-white/60 hover:text-white text-sm font-bold uppercase tracking-widest transition-colors">
+                        Cancel
+                    </button>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-border-dark text-white hover:bg-border-dark transition-all text-sm font-bold uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+                            Back
+                        </button>
+<button class="flex items-center gap-2 px-8 py-2.5 rounded-lg bg-primary text-background-dark hover:bg-primary/80 transition-all shadow-lg shadow-primary/20 text-sm font-bold uppercase tracking-widest">
+                            Next: Security &amp; Keys
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Notification Toast (Subtle bottom-right) -->
+<div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-surface-dark border border-primary/50 rounded-lg px-4 py-3 shadow-2xl">
+<div class="size-2 bg-primary rounded-full animate-pulse"></div>
+<p class="text-xs text-white font-medium">Auto-scanning topic scope <span class="text-primary font-mono">na.ca.ns.flood.*</span></p>
+</div>
+</div>
+</body></html>
