@@ -205,17 +205,11 @@ classDiagram
     +lon: float
   }
 
-  class ClientProfile {
-    +profileUid: String
-    +memberUid: String
-    +displayName: string
-    +callsign: string
-    +role: TeamRole
-    +email: string[0..1]
-    +phone: string[0..1]
-    +availability: String[0..1]
-    +certifications: String[0..*]
-    +lastActive: DateTime[0..1]
+   class Client {
+    +identity: str
+    +last_seen: datetime
+    +display_name: Optional[str]
+    +metadata: Dict[str, Any]
   }
 
   class Skill {
@@ -276,7 +270,7 @@ classDiagram
   checklistTask "1" o-- "0..*" TaskSkillRequirement : task_Associates_skillRequirements
   TeamMember "1" o-- "0..*" MissionTaskAssignment : member_Associates_assignments
   MissionTaskAssignment "0..*" -- "0..*" Asset : assignment_Associates_assets
-  TeamMember "1" --> "0..1" ClientProfile : TeamMember_Associates_Profile
+  Client "1" --> "0..1" TeamMember : Client_Associates_Profile
   TeamMember "1" o-- "0..*" TeamMemberSkill : TeamMember_Associates_Skills
   Skill "1" o-- "0..*" TeamMemberSkill : Skill_Associates_members
   Skill "1" o-- "0..*" TaskSkillRequirement : Skill_Associates_taskRequirements
@@ -287,7 +281,6 @@ classDiagram
   Asset --> AssetStatus : status
   Team --> TeamColor : color
   TeamMember --> TeamRole : role
-  ClientProfile --> TeamRole : role
   checklist --> checklistStatus : checklistStatus
   checklistTask --> checklistTaskStatus : taskStatus
   MissionTaskAssignment --> checklistTaskStatus : status
