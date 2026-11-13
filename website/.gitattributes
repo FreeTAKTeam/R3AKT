@@ -1,0 +1,3 @@
+# Preserve upstream benchmark checksums across Windows and Linux checkouts.
+/public/benchmarks/lxmf-fair-2026-11-01.json -text
+/public/benchmarks/LXMF-rs-LICENSE.txt -whitespace
