@@ -13,7 +13,7 @@ export const statusLabels: Record<Status, Copy> = {
   planned: { en: "Planned", it: "Pianificato" },
 };
 
-export const features: { id: string; name: string; type: string; status: Status; version?: string; summary: Copy; detail: Copy; url?: string; link?: Copy }[] = [
+export const features: { id: string; name: string | Copy; type: string; status: Status; version?: string; summary: Copy; detail: Copy; url?: string; link?: Copy }[] = [
   {
     id: "rns", name: "LXMF-rs / Rust RNS", type: "FOUNDATION / NETWORK STACK", status: "published", version: lxmfStable.tag,
     summary: { en: "Our Reticulum and LXMF implementation in Rust.", it: "La nostra implementazione Reticulum e LXMF in Rust." },
@@ -73,6 +73,18 @@ export const features: { id: string; name: string; type: string; status: Status;
     summary: { en: "From an observation to a shared point.", it: "Dall’osservazione a un punto condiviso." },
     detail: { en: "Connect ATN BinoX 4K over Bluetooth to turn measurements into REM markers and show permitted points on the BinoX display. Version 0.4.5 updates the native build for 16 KiB alignment and ships with REM 1.6.2. Other models and firmware need separate validation.", it: "Collega ATN BinoX 4K via Bluetooth per trasformare misurazioni in marker REM e mostrare sul display BinoX i punti autorizzati. La versione 0.4.5 aggiorna la build nativa con allineamento a 16 KiB ed è distribuita con REM 1.6.2. Altri modelli e firmware richiedono verifiche separate." },
     url: remAsset("atn-rangefinder.apk"), link: { en: "Download ATN Rangefinder APK", it: "Scarica l’APK ATN Rangefinder" },
+  },
+  {
+    id: "night-vision-streaming", name: { en: "Night vision streaming", it: "Streaming da visore notturno" }, type: "NIGHT VISION / LIVE VIDEO", status: "development",
+    summary: { en: "Live video and audio from an NV30 night-vision device.", it: "Video e audio in diretta da un visore notturno NV30." },
+    detail: { en: "A local Wi-Fi test kept the NV30’s RTSP stream connected for 10 minutes, with some missing and corrupt frames. Relaying the feed to remote viewers via MediaMTX is planned.", it: "In una prova su Wi-Fi locale, il flusso RTSP dell’NV30 è rimasto attivo per 10 minuti, con alcuni fotogrammi mancanti o corrotti. È previsto l’inoltro a spettatori remoti tramite MediaMTX." },
+    url: "https://github.com/FreeTAKTeam/atn-rangefinder/blob/3ce2aa60e70ffa6a3d6ed2ce4d63d98e988c02a1/docs/nv30-wifi-interface.md#long-run-test-2026-11-16", link: { en: "NV30 streaming test notes", it: "Note sul test di streaming NV30" },
+  },
+  {
+    id: "binox-video-streaming", name: { en: "ATN BinoX video streaming", it: "Streaming video da ATN BinoX" }, type: "OPTICS / REM PLUGIN", status: "development",
+    summary: { en: "Bring the BinoX 4K’s live view into REM over Wi-Fi.", it: "Porta la vista in diretta del BinoX 4K in REM via Wi-Fi." },
+    detail: { en: "Local RTSP playback from the BinoX 4K was verified on a laptop. The ATN plugin roadmap starts with live video and an on-screen overlay in REM, followed by a MediaMTX relay for remote viewers.", it: "La riproduzione RTSP locale dal BinoX 4K è stata verificata su un portatile. La roadmap del plugin ATN prevede prima il video in diretta con informazioni sovrapposte in REM, poi l’inoltro a spettatori remoti tramite MediaMTX." },
+    url: "https://github.com/FreeTAKTeam/atn-rangefinder/blob/3ce2aa60e70ffa6a3d6ed2ce4d63d98e988c02a1/docs/goals/binox-live-view/spec.md", link: { en: "BinoX live-view specification", it: "Specifica della vista in diretta BinoX" },
   },
   {
     id: "drones", name: "Drone control over Reticulum", type: "DRONES / RETICULUM CONTROL", status: "development",
