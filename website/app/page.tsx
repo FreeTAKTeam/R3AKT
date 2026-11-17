@@ -9,8 +9,6 @@ import RemTutorials from "./rem-tutorials";
 import YouTubePlayer from "./youtube-player";
 import { lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, yaraRelease } from "./releases";
 const BASE_PATH = import.meta.env.BASE_URL;
-const R3AKT_ICON = `${BASE_PATH}r3akt-icon.png`;
-const R3AKT_LOGO = `${BASE_PATH}r3akt-logo-420.png`;
 
 const REM_REPO = remRelease.repository;
 const RCH_REPO = rchPython.repository;
@@ -25,6 +23,15 @@ const videos = [
 
 function R3AKTName() {
   return <span className="r3akt-name">R<sup>3</sup>AKT</span>;
+}
+
+function BrandLogo({ decorative = false }: { decorative?: boolean }) {
+  return (
+    <span className="r3akt-logo">
+      <img className="r3akt-logo-symbol" src={`${BASE_PATH}r3akt-symbol.png`} alt="" width={256} height={256} />
+      <img className="r3akt-logo-wordmark" src={`${BASE_PATH}r3akt-wordmark.png`} alt={decorative ? "" : "R³AKT"} width={640} height={179} />
+    </span>
+  );
 }
 
 function ArrowIcon() {
@@ -135,8 +142,7 @@ export default function Home() {
       <MotionEffects language={language} />
       <header className="site-header">
         <a className="brand" href="#top" aria-label={t("R3AKT — back to top", "R3AKT — torna all'inizio")}>
-          <img className="brand-mark" src={R3AKT_ICON} alt="" width={42} height={42} />
-          <span className="brand-name"><R3AKTName /> <small>ECOSYSTEM</small></span>
+          <BrandLogo decorative />
         </a>
 
         <nav className="desktop-nav" aria-label={t("Main navigation", "Navigazione principale")}>
@@ -190,7 +196,7 @@ export default function Home() {
         <div className="hero-copy">
           <div className="eyebrow"><span aria-hidden="true" /> RETICULUM RESILIENT RESPONSE TACTICAL KIT</div>
           <h1>
-            <img className="hero-logo" src={R3AKT_LOGO} alt="R³AKT" width={420} height={420} />
+            <BrandLogo />
             <em>Democratizing Situational Awareness</em>
           </h1>
           <p className="hero-lede">
@@ -498,8 +504,8 @@ export default function Home() {
 
       <footer>
         <div className="footer-brand">
-          <img className="brand-mark" src={R3AKT_ICON} alt="" width={42} height={42} />
-          <div><strong><R3AKTName /></strong><small>LXMF-rs / Rust RNS · REM + RCH + YARA</small></div>
+          <BrandLogo />
+          <small>LXMF-rs / Rust RNS · REM + RCH + YARA</small>
         </div>
         <div className="footer-links">
           <a href={RNS_REPO}>Rust RNS / LXMF-rs</a>
