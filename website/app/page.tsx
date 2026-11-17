@@ -6,6 +6,7 @@ import RustStack, { RNS_REPO } from "./rust-stack";
 import Performance from "./performance";
 import MotionEffects from "./motion-effects";
 import RemTutorials from "./rem-tutorials";
+import YouTubePlayer from "./youtube-player";
 import { lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, yaraRelease } from "./releases";
 const BASE_PATH = import.meta.env.BASE_URL;
 
@@ -13,6 +14,7 @@ const REM_REPO = remRelease.repository;
 const RCH_REPO = rchPython.repository;
 const R3AKT_REPO = "https://github.com/FreeTAKTeam/R3AKTClient";
 const RCH_MANIFESTO = `${RCH_REPO}/blob/main/docs/Manifesto_Reticulum_Community_Hub.md`;
+const REVEAL_TRAILER_ID = "ywKSxWirQnU";
 
 const videos = [
   { label: "REM // FIELD OPERATIONS", url: "https://www.youtube.com/watch?v=CytmrXzpsps&list=PLZ5ClmhIPkfLwVjcc8HQM8EOYZ1vLepED&index=2" },
@@ -110,7 +112,9 @@ const remScenarios = [
 
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "it">("en");
+  const [trailerActive, setTrailerActive] = useState(false);
   const t = (en: string, it: string) => language === "en" ? en : it;
+  const trailerLabel = t("Watch the reveal trailer", "Guarda il trailer di presentazione");
   const downloads = [
     { name: "REM", meta: `Android · ${remRelease.tag} · Complete / Light`, url: remRelease.notes },
     { name: "LXMF-rs / RNS", meta: `${t("Stable", "Stabile")} · ${lxmfStable.tag}`, url: lxmfStable.notes },
@@ -205,6 +209,7 @@ export default function Home() {
               {t("Explore our Rust RNS stack", "Esplora il nostro stack RNS Rust")} <ArrowIcon />
             </a>
           </div>
+          <a className="hero-trailer-link" href="#reveal-trailer"><span aria-hidden="true">▶</span> {trailerLabel}</a>
           <div className="hero-proof">
             <span><i className="check" /> {t("End-to-end encryption", "Crittografia end-to-end")}</span>
             <span><i className="check" /> Offline-first</span>
@@ -259,6 +264,19 @@ export default function Home() {
         <span>RETICULUM + LXMF</span><i />
         <span>RADIO / TCP / LORA</span><i />
         <span>OPEN SOURCE</span>
+      </section>
+
+      <section className="reveal-trailer section-shell" id="reveal-trailer" aria-labelledby="reveal-trailer-title">
+        <div className="section-heading reveal-trailer-copy">
+          <div>
+            <p className="section-kicker">{t("REVEAL TRAILER", "TRAILER DI PRESENTAZIONE")}</p>
+            <h2 id="reveal-trailer-title">{t("When every second counts.", "Quando ogni secondo conta.")}</h2>
+          </div>
+          <a className="button button-secondary" href={`https://www.youtube.com/watch?v=${REVEAL_TRAILER_ID}`} target="_blank" rel="noreferrer">
+            {t("Watch on YouTube", "Guarda su YouTube")} <ArrowIcon />
+          </a>
+        </div>
+        <YouTubePlayer id={REVEAL_TRAILER_ID} title={`R³AKT — ${trailerLabel}`} playLabel={trailerLabel} active={trailerActive} onPlay={() => setTrailerActive(true)} featured />
       </section>
 
       <RustStack language={language} />

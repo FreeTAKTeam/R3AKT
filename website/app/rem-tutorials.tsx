@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import YouTubePlayer from "./youtube-player";
 
 const playlistId = "PLait08aJQUoA";
 
@@ -53,23 +54,7 @@ export default function RemTutorials() {
       <div className="rem-tutorial-grid">
         {tutorials.map(({ id, title, description }, index) => (
           <article className="rem-tutorial" key={id}>
-            <div className="tutorial-frame">
-              {activeId === id ? (
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`}
-                  title={title}
-                  allow="autoplay; encrypted-media; picture-in-picture"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  ref={player => { player?.focus(); }}
-                />
-              ) : (
-                <button type="button" onClick={() => setActiveId(id)} aria-label={`Riproduci: ${title}`}>
-                  <img src={`https://i.ytimg.com/vi/${id}/mqdefault.jpg`} alt="" width={320} height={180} loading="lazy" />
-                  <span className="play-icon" aria-hidden="true">▶</span>
-                </button>
-              )}
-            </div>
+            <YouTubePlayer id={id} title={title} playLabel={`Riproduci: ${title}`} active={activeId === id} onPlay={() => setActiveId(id)} />
             <div className="tutorial-copy">
               <p className="section-kicker">VIDEO {String(index + 1).padStart(2, "0")}</p>
               <h3>{title}</h3>
