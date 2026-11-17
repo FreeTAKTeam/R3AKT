@@ -9,6 +9,8 @@ import RemTutorials from "./rem-tutorials";
 import YouTubePlayer from "./youtube-player";
 import { lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, yaraRelease } from "./releases";
 const BASE_PATH = import.meta.env.BASE_URL;
+const R3AKT_ICON = `${BASE_PATH}r3akt-icon.png`;
+const R3AKT_LOGO = `${BASE_PATH}r3akt-logo-420.png`;
 
 const REM_REPO = remRelease.repository;
 const RCH_REPO = rchPython.repository;
@@ -133,11 +135,7 @@ export default function Home() {
       <MotionEffects language={language} />
       <header className="site-header">
         <a className="brand" href="#top" aria-label={t("R3AKT — back to top", "R3AKT — torna all'inizio")}>
-          <span className="brand-mark" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
+          <img className="brand-mark" src={R3AKT_ICON} alt="" width={42} height={42} />
           <span className="brand-name"><R3AKTName /> <small>ECOSYSTEM</small></span>
         </a>
 
@@ -190,9 +188,9 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-copy">
-          <div className="eyebrow"><span /> <R3AKTName /> // RETICULUM RESILIENT RESPONSE TACTICAL KIT</div>
+          <div className="eyebrow"><span aria-hidden="true" /> RETICULUM RESILIENT RESPONSE TACTICAL KIT</div>
           <h1>
-            <R3AKTName /><br />
+            <img className="hero-logo" src={R3AKT_LOGO} alt="R³AKT" width={420} height={420} />
             <em>Democratizing Situational Awareness</em>
           </h1>
           <p className="hero-lede">
@@ -500,7 +498,7 @@ export default function Home() {
 
       <footer>
         <div className="footer-brand">
-          <span className="brand-mark" aria-hidden="true"><i /><i /><i /></span>
+          <img className="brand-mark" src={R3AKT_ICON} alt="" width={42} height={42} />
           <div><strong><R3AKTName /></strong><small>LXMF-rs / Rust RNS · REM + RCH + YARA</small></div>
         </div>
         <div className="footer-links">
