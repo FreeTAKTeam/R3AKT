@@ -8,6 +8,7 @@ import MotionEffects from "./motion-effects";
 import RemTutorials from "./rem-tutorials";
 import YouTubePlayer from "./youtube-player";
 import FabricLogo from "./fabric-logo";
+import RemLogo from "./rem-logo";
 import { lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, yaraRelease } from "./releases";
 const BASE_PATH = import.meta.env.BASE_URL;
 
@@ -302,8 +303,8 @@ export default function Home() {
               <span className="product-code"><small><R3AKTName /> /</small> REM</span>
               <span className="release-badge"><i /> RELEASE · {remRelease.tag}</span>
             </div>
-            <div className="product-logo rem-logo">
-              <img src={`${BASE_PATH}rem-logo.png`} alt="REM logo" />
+            <div className="rem-product-brand">
+              <RemLogo />
             </div>
             <p className="product-type">MOBILE CLIENT / ANDROID</p>
             <h3>Reticulum Emergency Management</h3>
@@ -406,7 +407,7 @@ export default function Home() {
           <div className="arch-flow" aria-label={t("Architecture flow", "Flusso architetturale")}>
             <div className="arch-node endpoint">
               <span>01</span><i className="phone-shape" />
-              <strong>REM</strong><small>FIELD CLIENT</small>
+              <strong><RemLogo /></strong><small>FIELD CLIENT</small>
             </div>
             <div className="arch-link"><i /><b>ENCRYPTED</b><i /></div>
             <div className="arch-node transport">

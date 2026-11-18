@@ -4,6 +4,7 @@ import { useState } from "react";
 import { features, statusLabels, type Language, type Status } from "./features";
 import { atnSetup } from "./releases";
 import FabricLogo from "./fabric-logo";
+import RemLogo from "./rem-logo";
 
 export default function FeatureRoadmap({ language }: { language: Language }) {
   const [filter, setFilter] = useState<"all" | Status>("all");
@@ -23,7 +24,7 @@ export default function FeatureRoadmap({ language }: { language: Language }) {
       <div className="feature-grid">
         {visible.map(feature => <article className="feature-card" key={feature.id}>
           <div className="feature-top"><span className={`feature-status ${feature.status}`}>{statusLabels[feature.status][language]}</span>{feature.version && <span className="feature-version">{feature.version}</span>}</div>
-          <p className="feature-type">{feature.type}</p><h3>{feature.id === "rns" ? <FabricLogo /> : typeof feature.name === "string" ? feature.name : feature.name[language]}</h3><p className="feature-summary">{feature.summary[language]}</p><p className="feature-detail">{feature.detail[language]}</p>
+          <p className="feature-type">{feature.type}</p><h3>{feature.id === "rns" ? <FabricLogo /> : feature.id === "rem" ? <RemLogo /> : typeof feature.name === "string" ? feature.name : feature.name[language]}</h3><p className="feature-summary">{feature.summary[language]}</p><p className="feature-detail">{feature.detail[language]}</p>
           {feature.url ? <a href={feature.url} target="_blank" rel="noreferrer">{feature.link?.[language]} <span aria-hidden="true">↗</span></a> : <p className="feature-pending">{feature.status === "development" ? t("Development updates to follow", "Seguiranno aggiornamenti sullo sviluppo") : t("Release details coming soon", "Dettagli del rilascio a breve")}</p>}
         </article>)}
       </div>
