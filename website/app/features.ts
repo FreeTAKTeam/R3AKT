@@ -15,13 +15,13 @@ export const statusLabels: Record<Status, Copy> = {
 
 export const features: { id: string; name: string | Copy; type: string; status: Status; version?: string; summary: Copy; detail: Copy; url?: string; link?: Copy }[] = [
   {
-    id: "rns", name: "LXMF-rs / Rust RNS", type: "FOUNDATION / NETWORK STACK", status: "published", version: lxmfStable.tag,
+    id: "rns", name: "Fabric / Rust RNS", type: "FOUNDATION / NETWORK STACK", status: "published", version: lxmfStable.tag,
     summary: { en: "Our Reticulum and LXMF implementation in Rust.", it: "La nostra implementazione Reticulum e LXMF in Rust." },
-    detail: { en: "FreeTAKTeam’s independent Rust implementation of RNS and LXMF powers REM, RCH Rust and YARA. The stable release aligns 22 public packages and adds a reusable durable event broker, more efficient propagation storage, and readiness notifications for reticulumd under systemd. Packages are available for Linux, macOS and Windows.", it: "L’implementazione indipendente in Rust di RNS e LXMF di FreeTAKTeam è alla base di REM, RCH Rust e YARA. La release stabile allinea 22 pacchetti pubblici e introduce un broker riutilizzabile per eventi persistenti, uno storage di propagazione più efficiente e notifiche di avvio di reticulumd con systemd. Pacchetti per Linux, macOS e Windows." },
-    url: lxmfStable.notes, link: { en: "Rust stack release & downloads", it: "Release e download dello stack Rust" },
+    detail: { en: "Fabric, formerly LXMF-rs, is FreeTAKTeam’s reusable communication infrastructure. Its Rust implementation of RNS and LXMF powers REM, RCH Rust and YARA. The stable release aligns 22 public packages and adds a reusable durable event broker, more efficient propagation storage, and readiness notifications for reticulumd under systemd. Packages are available for Linux, macOS and Windows.", it: "Fabric, in precedenza LXMF-rs, è l’infrastruttura di comunicazione riutilizzabile di FreeTAKTeam. L’implementazione Rust di RNS e LXMF è alla base di REM, RCH Rust e YARA. La release stabile allinea 22 pacchetti pubblici e introduce un broker riutilizzabile per eventi persistenti, uno storage di propagazione più efficiente e notifiche di avvio di reticulumd con systemd. Pacchetti per Linux, macOS e Windows." },
+    url: lxmfStable.notes, link: { en: "Fabric release & downloads", it: "Release e download di Fabric" },
   },
   {
-    id: "rns-rc", name: "LXMF-rs release candidate", type: "FOUNDATION / NETWORK STACK", status: "preview", version: lxmfCandidate.tag,
+    id: "rns-rc", name: "Fabric release candidate", type: "FOUNDATION / NETWORK STACK", status: "preview", version: lxmfCandidate.tag,
     summary: { en: "Test the next maintenance update.", it: "Prova il prossimo aggiornamento di manutenzione." },
     detail: { en: "The candidate reclaims idle SDK sessions while preserving durable identities and accepted work. It also updates SQLite and rustix and fixes interface and shutdown behavior. Use the stable release for the standard distribution.", it: "La candidata libera le sessioni SDK inattive preservando identità persistenti e operazioni già accettate. Aggiorna anche SQLite e rustix e corregge il comportamento delle interfacce e dell’arresto. Per la distribuzione ordinaria usa la release stabile." },
     url: lxmfCandidate.notes, link: { en: "Candidate packages & notes", it: "Pacchetti e note della candidata" },

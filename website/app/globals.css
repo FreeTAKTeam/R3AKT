@@ -195,6 +195,19 @@ body { font-family: var(--font-barlow), "Segoe UI", sans-serif; }
 .rust-identity { padding: 42px; background: radial-gradient(circle at 15% 30%,rgba(0,180,255,.13),transparent 70%); }
 .rust-identity > p:first-of-type { color: var(--cui-cyan); margin: 40px 0 12px; font: 10px var(--font-mono); letter-spacing: .14em; }
 .rust-identity h3 { color: #e1faff; margin: 0; font: 600 clamp(34px,4vw,54px)/1.2 var(--font-display); }
+.fabric-logo {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 290px);
+  vertical-align: middle;
+}
+.fabric-logo img { display: block; width: 100%; height: auto; }
+.rust-identity h3 .fabric-logo { width: min(100%, 360px); }
+.feature-card h3 .fabric-logo { width: min(100%, 235px); }
+.arch-node .fabric-logo { width: min(100%, 165px); gap: 6px; }
+.resource-card h3 .fabric-logo { width: min(100%, 225px); }
 .rust-identity > p:last-of-type { color: var(--cui-muted); font-size: 17px; line-height: 1.7; margin: 20px 0 30px; }
 .rust-links { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
 .rust-links > a:last-child { color: var(--cui-cyan); font: 11px var(--font-mono); }

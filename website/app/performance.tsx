@@ -34,7 +34,7 @@ export default function Performance({ language }: { language: Language }) {
     <section className="performance section-shell" id="performance">
       <div className="section-heading">
         <div><p className="section-kicker">MEASURED / NOV 2026</p><h2>{t("Put the stack", "Metti lo stack")}<br /><span>{t("to the test.", "alla prova.")}</span></h2></div>
-        <p>{t("Compare LXMF-rs and the Python reference across 18 matched workloads. Switch metrics to see how the results change.", "Confronta LXMF-rs e l’implementazione Python di riferimento su 18 carichi equivalenti. Cambia metrica per vedere come variano i risultati.")}</p>
+        <p>{t("Compare Fabric’s Reticulum/LXMF implementation, measured as LXMF-rs, with the Python reference across 18 matched workloads. Switch metrics to see how the results change.", "Confronta l’implementazione Reticulum/LXMF di Fabric, misurata come LXMF-rs, con il riferimento Python su 18 carichi equivalenti. Cambia metrica per vedere come variano i risultati.")}</p>
       </div>
       <div className="benchmark-stage" aria-labelledby="benchmark-results">
         <div className="benchmark-overview">

@@ -7,6 +7,7 @@ import Performance from "./performance";
 import MotionEffects from "./motion-effects";
 import RemTutorials from "./rem-tutorials";
 import YouTubePlayer from "./youtube-player";
+import FabricLogo from "./fabric-logo";
 import { lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, yaraRelease } from "./releases";
 const BASE_PATH = import.meta.env.BASE_URL;
 
@@ -126,7 +127,7 @@ export default function Home() {
   const trailerLabel = t("Watch the reveal trailer", "Guarda il trailer di presentazione");
   const downloads = [
     { name: "REM", meta: `Android · ${remRelease.tag} · Complete / Light`, url: remRelease.notes },
-    { name: "LXMF-rs / RNS", meta: `${t("Stable", "Stabile")} · ${lxmfStable.tag}`, url: lxmfStable.notes },
+    { name: "Fabric / RNS", meta: `${t("Stable", "Stabile")} · ${lxmfStable.tag}`, url: lxmfStable.notes },
     { name: "YARA", meta: `Desktop beta · ${yaraRelease.tag}`, url: yaraRelease.notes },
     { name: "ATN BinoX plugin", meta: `Android APK · ${remPluginVersions.atn}`, url: remAsset("atn-rangefinder.apk") },
     { name: "RCH Python", meta: `${t("Published", "Pubblicato")} · ${rchPython.tag}`, url: rchPython.notes },
@@ -149,7 +150,7 @@ export default function Home() {
           <a href="#projects">{t("Projects", "Progetti")}</a>
           <a href="#roadmap">{t("What’s new", "Novità")}</a>
           <a href="#use-cases">{t("Use cases", "Casi d’uso")}</a>
-          <a href="#rust-stack">Rust RNS</a>
+          <a href="#rust-stack">Fabric</a>
           <a href="#manifesto">{t("Manifesto", "Manifesto")}</a>
           <a href="#performance">{t("Benchmarks", "Benchmark")}</a>
           <a href="#resources">{t("Resources", "Risorse")}</a>
@@ -182,7 +183,7 @@ export default function Home() {
             <a href="#projects">{t("Projects", "Progetti")}</a>
             <a href="#roadmap">{t("What’s new", "Novità")}</a>
             <a href="#use-cases">{t("Use cases", "Casi d’uso")}</a>
-            <a href="#rust-stack">Rust RNS</a>
+            <a href="#rust-stack">Fabric</a>
             <a href="#manifesto">{t("Manifesto", "Manifesto")}</a>
             <a href="#performance">{t("Benchmarks", "Benchmark")}</a>
             <a href="#resources">{t("Resources", "Risorse")}</a>
@@ -201,8 +202,8 @@ export default function Home() {
           </h1>
           <p className="hero-lede">
             {t(
-              "R³AKT brings sovereign situational awareness to the field with REM, RCH and YARA. At its foundation is LXMF-rs: FreeTAKTeam’s own Rust implementation of the Reticulum Network Stack (RNS) and LXMF messaging, with reusable libraries, a typed SDK and daemons.",
-              "R³AKT porta sul campo la consapevolezza situazionale sovrana con REM, RCH e YARA. Alla base c’è LXMF-rs: l’implementazione Rust di FreeTAKTeam dello stack di rete Reticulum (RNS) e della messaggistica LXMF, con librerie riutilizzabili, SDK tipizzato e daemon."
+              "R³AKT brings sovereign situational awareness to the field with REM, RCH and YARA. Fabric, formerly LXMF-rs, provides the communication foundation. FreeTAKTeam’s Rust implementation of Reticulum (RNS) and LXMF includes reusable libraries, a typed SDK and daemons.",
+              "R³AKT porta sul campo la consapevolezza situazionale sovrana con REM, RCH e YARA. Fabric, in precedenza LXMF-rs, fornisce la base di comunicazione. L’implementazione Rust di FreeTAKTeam di Reticulum (RNS) e LXMF include librerie riutilizzabili, SDK tipizzato e daemon."
             )}
           </p>
           <div className="hero-actions">
@@ -210,7 +211,7 @@ export default function Home() {
               <DownloadIcon /> {t("Download REM for Android", "Scarica REM per Android")}
             </a>
             <a className="button button-secondary" href="#rust-stack">
-              {t("Explore our Rust RNS stack", "Esplora il nostro stack RNS Rust")} <ArrowIcon />
+              {t("Explore Fabric", "Esplora Fabric")} <ArrowIcon />
             </a>
           </div>
           <a className="hero-trailer-link" href="#reveal-trailer"><span aria-hidden="true">▶</span> {trailerLabel}</a>
@@ -264,7 +265,7 @@ export default function Home() {
       <section className="tech-strip" aria-label={t("Technical features", "Caratteristiche tecniche")}>
         <span>R³AKT ECOSYSTEM</span><i />
         <span>ANDROID CLIENT</span><i />
-        <span>LXMF-rs / RUST RNS</span><i />
+        <span>Fabric / RUST RNS</span><i />
         <span>RETICULUM + LXMF</span><i />
         <span>RADIO / TCP / LORA</span><i />
         <span>OPEN SOURCE</span>
@@ -398,7 +399,7 @@ export default function Home() {
             <p className="section-kicker">05 / {t("HOW IT WORKS", "COME FUNZIONA")}</p>
             <h2>{t("A network that adapts", "Una rete che si adatta")}<br /><span>{t("to the available link.", "al collegamento disponibile.")}</span></h2>
           </div>
-          <p>{t("The Reticulum protocol is implemented here by FreeTAKTeam’s LXMF-rs Rust stack. REM embeds it locally; the RCH 3.0 Rust preview uses the daemon and typed SDK; YARA uses the daemon’s HTTP/WebSocket adapter. Applications share the networking foundation while retaining their own workflows.", "Il protocollo Reticulum è implementato qui dallo stack Rust LXMF-rs di FreeTAKTeam. REM lo integra localmente; l’anteprima Rust RCH 3.0 usa daemon e SDK tipizzato; YARA usa l’adattatore HTTP/WebSocket. Le applicazioni condividono la base di rete mantenendo i propri flussi.")}</p>
+          <p>{t("The Reticulum protocol is implemented here by FreeTAKTeam’s Fabric Rust stack. REM embeds it locally; the RCH 3.0 Rust preview uses the daemon and typed SDK; YARA uses the daemon’s HTTP/WebSocket adapter. Applications share the networking foundation while retaining their own workflows.", "Il protocollo Reticulum è implementato qui dallo stack Rust Fabric di FreeTAKTeam. REM lo integra localmente; l’anteprima Rust RCH 3.0 usa daemon e SDK tipizzato; YARA usa l’adattatore HTTP/WebSocket. Le applicazioni condividono la base di rete mantenendo i propri flussi.")}</p>
         </div>
 
         <div className="architecture-panel">
@@ -410,7 +411,7 @@ export default function Home() {
             <div className="arch-link"><i /><b>ENCRYPTED</b><i /></div>
             <div className="arch-node transport">
               <span>02</span><i className="mesh-shape" />
-              <strong>LXMF-rs</strong><small>RUST RNS + LXMF</small>
+              <strong><FabricLogo /></strong><small>RUST RNS + LXMF</small>
             </div>
             <div className="arch-link"><i /><b>ROUTED</b><i /></div>
             <div className="arch-node endpoint">
@@ -458,7 +459,7 @@ export default function Home() {
           <div className="resource-grid">
             <a className="resource-card" href={RNS_REPO} target="_blank" rel="noreferrer">
               <span className="resource-icon"><GithubIcon /></span>
-              <p>RUST RNS + LXMF</p><h3>LXMF-rs</h3>
+              <p>RUST RNS + LXMF</p><h3><FabricLogo /></h3>
               <small>{t("Our independent Reticulum implementation, published Rust libraries, SDK, daemons and interoperability evidence.", "La nostra implementazione indipendente di Reticulum, librerie Rust, SDK, daemon ed evidenze di interoperabilità.")}</small>
               <b>{t("EXPLORE THE STACK", "ESPLORA LO STACK")} <ArrowIcon /></b>
             </a>
@@ -505,10 +506,10 @@ export default function Home() {
       <footer>
         <div className="footer-brand">
           <BrandLogo />
-          <small>LXMF-rs / Rust RNS · REM + RCH + YARA</small>
+          <small>Fabric / Rust RNS · REM + RCH + YARA</small>
         </div>
         <div className="footer-links">
-          <a href={RNS_REPO}>Rust RNS / LXMF-rs</a>
+          <a href={RNS_REPO}>Rust RNS / Fabric</a>
           <a href={REM_REPO}>REM</a><a href={RCH_REPO}>RCH</a><a href={yaraRelease.notes}>YARA</a><a href="#roadmap">Roadmap</a><a href="#manifesto">Manifesto</a><a href="#videos">Video</a><a href="#resources">Docs</a><a href="https://github.com/FreeTAKTeam">GitHub</a>
         </div>
         <p>Open source · See each project for its license</p>

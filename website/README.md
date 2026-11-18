@@ -53,6 +53,8 @@ Run these commands from `website/` and open `http://127.0.0.1:4173/R3AKT/`. Leav
 
 ## Maintain capabilities and roadmap
 
+The networking stack is presented as Fabric, formerly LXMF-rs. Its symbol and wordmark come from [the official Fabric assets](https://github.com/FreeTAKTeam/LXMF-rs/blob/44a16645c51b1ee0477f5d2621e5acc02b39660c/docs/fabric.md#brand-assets) and are served as optimized transparent PNGs. Keep technical package names, repository links, release tags and historical benchmark provenance aligned with their sources.
+
 Edit `app/releases.ts` for release tags and plugin versions, and `app/features.ts` for English/Italian descriptions, statuses and evidence links. `app/feature-roadmap.tsx` renders the filters and cards. Update the review date there whenever feature evidence is refreshed. Content is a reviewed snapshot.
 
 | Status | Meaning |
