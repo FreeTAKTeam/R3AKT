@@ -1,4 +1,4 @@
-import { lxmfCandidate, lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, yaraRelease } from "./releases";
+import { lxmfCandidate, lxmfStable, rchPython, rchRust, remAsset, remPluginVersions, remRelease, uasAlpha, yaraRelease } from "./releases";
 
 export type Language = "en" | "it";
 type Copy = Record<Language, string>;
@@ -49,6 +49,17 @@ export const features: { id: string; name: string | Copy; type: string; status: 
     summary: { en: "A practical window into the Rust mesh.", it: "Una finestra pratica sulla mesh Rust." },
     detail: { en: "Yet Another Reticulum Application is a MeshChat-compatible desktop messenger with a bundled Rust daemon. Beta.3 adds separate identity profiles and a Backbone Client interface. New profiles connect to the R3AKT backbone by default; existing interfaces stay as saved. Unsigned beta builds are available for Windows, macOS and Linux, including Raspberry Pi OS 64-bit.", it: "Yet Another Reticulum Application è un’app desktop di messaggistica compatibile con MeshChat, con daemon Rust incluso. La beta.3 aggiunge profili di identità separati e l’interfaccia Backbone Client. I nuovi profili si collegano alla dorsale R3AKT per impostazione predefinita; le interfacce esistenti restano invariate. Build beta non firmate per Windows, macOS e Linux, incluso Raspberry Pi OS a 64 bit." },
     url: yaraRelease.notes, link: { en: "Download the desktop beta", it: "Scarica la beta desktop" },
+  },
+  {
+    id: "r3akt-uas", name: "R3AKT UAS", type: "ANDROID / DJI", status: "preview", version: uasAlpha.version,
+    summary: { en: "An Android flight app that shares map markers with RCH.", it: "Un’app di volo per Android che condivide marker sulla mappa con RCH." },
+    detail: { en: "The tester alpha flew on a DJI Mavic Air 2 with a Pixel 7. The team verified takeoff, landing, return to home and delivery of map markers to an RCH hub. Most other features still need field validation.", it: "L’alpha per i tester è stata provata in volo su un DJI Mavic Air 2 con un Pixel 7. Il team ha verificato decollo, atterraggio, ritorno al punto di partenza e invio di marker a un hub RCH. La maggior parte delle altre funzioni richiede ancora prove sul campo." },
+    url: uasAlpha.notes, link: { en: "Alpha tester notes", it: "Note per i tester dell’alpha" },
+  },
+  {
+    id: "sigil", name: "R3AKT SIGIL", type: "RADIO / SDR GATEWAY", status: "development",
+    summary: { en: "Bring voice and position reports from analog radios into RCH.", it: "Porta in RCH i messaggi vocali e le posizioni delle radio analogiche." },
+    detail: { en: "SIGIL receives analog FM via software-defined radio and transcribes speech locally. Kodiak interprets voice commands. The gateway decodes radio IDs and positions and can forward text and telemetry from authorized radios to RCH.", it: "SIGIL riceve segnali FM analogici tramite una radio definita via software e trascrive la voce in locale. Kodiak interpreta i comandi vocali. Il gateway decodifica gli identificativi e le posizioni delle radio e può inoltrare a RCH testo e telemetria dalle radio autorizzate." },
   },
   {
     id: "trex", name: "Amazfit T-Rex 2", type: "WEARABLE / REM TACTICAL", status: "preview",

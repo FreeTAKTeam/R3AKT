@@ -12,5 +12,9 @@ export const rchRust = release("Reticulum-Community-Hub", "v3.0.0-preview.38");
 export const lxmfStable = release("LXMF-rs", "v0.16.1");
 export const lxmfCandidate = release("LXMF-rs", "v0.16.2-rc.1");
 export const yaraRelease = release("YARA", "v1.0.0-beta.3");
+export const uasAlpha = {
+  version: "0.1.0-alpha.1",
+  notes: `${github}/r3akt-uas/blob/main/docs/release/0.1.0-alpha.1.md`,
+};
 export const remPluginVersions = { atn: "0.4.5", watch: "1.1.5", gotenna: "0.2.0-beta.2", heartRate: "1.0.1" };
 export const atnSetup = `${github}/atn-rangefinder/blob/corvo/implement-adapter/android/README.md`;
