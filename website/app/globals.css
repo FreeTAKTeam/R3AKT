@@ -181,10 +181,6 @@ body { font-family: var(--font-barlow), "Segoe UI", sans-serif; }
 :focus-visible { outline: 2px solid var(--cui-cyan); outline-offset: 4px; }
 @media (max-width: 700px) { .feature-grid { grid-template-columns: 1fr; }.feature-roadmap { padding-top: 60px; padding-bottom: 60px; }.feature-card { padding: 23px; }.roadmap-meta { flex-direction: column; gap: 10px; } }
 
-.operational-scenario{margin-top:54px;padding:clamp(24px,4vw,48px);border:1px solid rgba(55,242,255,.25);background:linear-gradient(135deg,#0b2633,#071521)}
-.operational-heading{display:flex;justify-content:space-between;align-items:end;gap:32px}.operational-heading h3{margin:8px 0 0;color:#edf9ff;font:600 clamp(23px,3vw,34px)/1.2 var(--font-display)}.operational-heading>p{max-width:360px;margin:0;color:#b6cfdb;font-size:16px;line-height:1.6}
-.operational-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:32px;background:rgba(55,242,255,.15);border:1px solid rgba(55,242,255,.15)}.operational-grid article{min-width:0;padding:24px;background:#0a1d2a}.operational-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(55,242,255,.35);color:var(--cui-cyan)}.operational-icon svg{width:30px;height:30px}.operational-grid h4{margin:18px 0 10px;color:#e9faff;font:600 18px/1.3 var(--font-display)}.operational-grid p{margin:0;color:#c2d7df;font-size:16px;line-height:1.6}.operational-grid article>span{display:block;margin-top:18px;color:#65e1d2;font:600 14px/1.5 var(--font-mono)}.operational-caption{margin:24px 0 0;padding-left:16px;border-left:2px solid #65e1d2;color:#c2d7df;font-size:16px;line-height:1.65}
-@media(max-width:980px){.operational-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.operational-heading{align-items:start;flex-direction:column;gap:16px}}@media(max-width:600px){.operational-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 
 .section-heading > div { min-width: 0; }
@@ -362,6 +358,11 @@ html[data-motion=paused] .hero-copy > * { animation: none !important; opacity: 1
 .reveal-trailer-copy { flex-direction: column; align-items: flex-start; gap: 24px; margin: 0; }
 .reveal-trailer .youtube-player { border: 1px solid var(--cui-line); box-shadow: var(--cui-glow); }
 .reveal-trailer .play-icon { width: 64px; height: 64px; font-size: 22px; }
+.hardware-catalog{margin-top:56px;padding:clamp(24px,4vw,48px);border:1px solid rgba(55,242,255,.25);background:linear-gradient(135deg,#0b2633,#071521);scroll-margin-top:95px}
+.hardware-heading{display:flex;justify-content:space-between;align-items:end;gap:32px}.hardware-heading h3{margin:8px 0 0;color:#edf9ff;font:600 clamp(23px,3vw,34px)/1.2 var(--font-display)}.hardware-heading>p{max-width:360px;margin:0;color:#b6cfdb;font-size:16px;line-height:1.6}
+.hardware-group-title{margin:38px 0 8px;color:#e9faff;font:600 20px/1.3 var(--font-display)}.hardware-group-note{margin:0 0 18px;color:#b6cfdb;font-size:16px;line-height:1.6}.hardware-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(55,242,255,.15);border:1px solid rgba(55,242,255,.15)}
+.hardware-card{min-width:0;padding:24px;background:#0a1d2a}.hardware-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(55,242,255,.35);color:var(--cui-cyan)}.hardware-icon svg{width:30px;height:30px}.hardware-category{margin:18px 0 7px;color:#95bfca;font:600 14px/1.4 var(--font-mono)}.hardware-card h5{margin:0;color:#e9faff;font:600 18px/1.3 var(--font-display)}.hardware-description{margin:12px 0 0;color:#c2d7df;font-size:16px;line-height:1.6}.hardware-status{margin:18px 0 0;color:#65e1d2;font:600 14px/1.5 var(--font-mono)}.hardware-card a{display:inline-block;margin-top:12px;color:#c2f8ff;font-size:15px;text-decoration:underline}
+@media(max-width:980px){.hardware-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hardware-heading{align-items:start;flex-direction:column;gap:16px}}@media(max-width:600px){.hardware-grid{grid-template-columns:1fr}}
 @media (max-width: 700px) {
   .reveal-trailer { grid-template-columns: minmax(0, 1fr); padding: 46px 0; scroll-margin-top: 78px; }
 }

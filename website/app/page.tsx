@@ -150,6 +150,7 @@ export default function Home() {
         <nav className="desktop-nav" aria-label={t("Main navigation", "Navigazione principale")}>
           <a href="#projects">{t("Projects", "Progetti")}</a>
           <a href="#roadmap">{t("What’s new", "Novità")}</a>
+          <a href="#hardware">Hardware</a>
           <a href="#use-cases">{t("Use cases", "Casi d’uso")}</a>
           <a href="#rust-stack">Fabric</a>
           <a href="#manifesto">{t("Manifesto", "Manifesto")}</a>
@@ -183,6 +184,7 @@ export default function Home() {
             </div>
             <a href="#projects">{t("Projects", "Progetti")}</a>
             <a href="#roadmap">{t("What’s new", "Novità")}</a>
+            <a href="#hardware">Hardware</a>
             <a href="#use-cases">{t("Use cases", "Casi d’uso")}</a>
             <a href="#rust-stack">Fabric</a>
             <a href="#manifesto">{t("Manifesto", "Manifesto")}</a>

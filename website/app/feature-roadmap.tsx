@@ -5,7 +5,7 @@ import { features, statusLabels, type Language, type Status } from "./features";
 import { atnSetup } from "./releases";
 import FabricLogo from "./fabric-logo";
 import RemLogo from "./rem-logo";
-import OperationalScenario from "./operational-scenario";
+import HardwareCatalog from "./hardware-catalog";
 
 export default function FeatureRoadmap({ language }: { language: Language }) {
   const [filter, setFilter] = useState<"all" | Status>("all");
@@ -30,7 +30,7 @@ export default function FeatureRoadmap({ language }: { language: Language }) {
         </article>)}
       </div>
       <div className="roadmap-sequence"><strong>{t("BINOCULARS ↔ SHARED MAP", "BINOCOLO ↔ MAPPA CONDIVISA")}</strong><p>{t("BinoX measurements → REM markers → team replication. Selected and permitted nearby REM points → BinoX display.", "Misurazioni BinoX → marker REM → replica al team. Punti REM selezionati e marker vicini autorizzati → display BinoX.")}</p><a href={atnSetup} target="_blank" rel="noreferrer">{t("Set up the BinoX plugin", "Configura il plugin BinoX")} ↗</a></div>
-      <OperationalScenario language={language} />
+      <HardwareCatalog language={language} />
     </section>
   );
 }
