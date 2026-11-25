@@ -10,7 +10,7 @@ const notFound = readFileSync(path.join(root, "404.html"), "utf8");
 const base = normalizeBase(process.env.PAGES_BASE_PATH);
 
 test("export includes meaningful content before JavaScript runs", () => {
-  for (const text of ["LXMF-rs", "Rust RNS", "Our RNS implementation.", "v0.16.1", "v0.16.2-rc.1", "Put the stack", "Reticulum packet pack", "goTenna", "ATN BinoX", "REM Watch Status plugin", "Drone control over Reticulum", "v1.0.0-beta.3", "Amazfit T-Rex 2", "1.6.2", "preview.38", "In development"]) assert.ok(html.includes(text), `Missing ${text}`);
+  for (const text of ["LXMF-rs", "Rust RNS", "Our RNS implementation.", "v0.16.1", "v0.16.2-rc.1", "Put the stack", "Reticulum packet pack", "goTenna", "ATN BinoX", "REM Watch Status plugin", "Drone control over Reticulum", "v1.0.0-beta.3", "Amazfit T-Rex 2", "1.6.2", "preview.38", "In development", "R3AKT SIGIL", "R3AKT UAS", "0.1.0 (alpha)", "0.1.0-alpha.1", "srQTixyQQUE", "25 NOV 2026"]) assert.ok(html.includes(text), `Missing ${text}`);
   assert.ok(!html.includes('name="codex-preview"'));
   assert.ok(existsSync(path.join(root, ".nojekyll")));
 });

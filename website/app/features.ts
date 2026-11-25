@@ -51,15 +51,16 @@ export const features: { id: string; name: string | Copy; type: string; status: 
     url: yaraRelease.notes, link: { en: "Download the desktop beta", it: "Scarica la beta desktop" },
   },
   {
-    id: "r3akt-uas", name: "R3AKT UAS", type: "ANDROID / DJI", status: "preview", version: uasAlpha.version,
-    summary: { en: "An Android flight app that shares map markers with RCH.", it: "Un’app di volo per Android che condivide marker sulla mappa con RCH." },
-    detail: { en: "The tester alpha flew on a DJI Mavic Air 2 with a Pixel 7. The team verified takeoff, landing, return to home and delivery of map markers to an RCH hub. Most other features still need field validation.", it: "L’alpha per i tester è stata provata in volo su un DJI Mavic Air 2 con un Pixel 7. Il team ha verificato decollo, atterraggio, ritorno al punto di partenza e invio di marker a un hub RCH. La maggior parte delle altre funzioni richiede ancora prove sul campo." },
-    url: uasAlpha.notes, link: { en: "Alpha tester notes", it: "Note per i tester dell’alpha" },
+    id: "r3akt-uas", name: "R3AKT UAS", type: "ANDROID / DJI", status: "published", version: uasAlpha.version,
+    summary: { en: "R3AKT UAS is available as a public alpha release.", it: "R3AKT UAS è disponibile come versione alpha pubblica." },
+    detail: { en: "Version 0.1.0-alpha.1 has been published. This is an early release for testing, and further validation is ongoing.", it: "La versione 0.1.0-alpha.1 è stata pubblicata. Si tratta di una versione iniziale per i test; la validazione prosegue." },
+    url: uasAlpha.notes, link: { en: "Read the alpha release notes", it: "Leggi le note di rilascio dell’alpha" },
   },
   {
-    id: "sigil", name: "R3AKT SIGIL", type: "RADIO / SDR GATEWAY", status: "development",
-    summary: { en: "Bring voice and position reports from analog radios into RCH.", it: "Porta in RCH i messaggi vocali e le posizioni delle radio analogiche." },
-    detail: { en: "SIGIL receives analog FM via software-defined radio and transcribes speech locally. Kodiak interprets voice commands. The gateway decodes radio IDs and positions and can forward text and telemetry from authorized radios to RCH.", it: "SIGIL riceve segnali FM analogici tramite una radio definita via software e trascrive la voce in locale. Kodiak interpreta i comandi vocali. Il gateway decodifica gli identificativi e le posizioni delle radio e può inoltrare a RCH testo e telemetria dalle radio autorizzate." },
+    id: "sigil", name: "R3AKT SIGIL", type: "RADIO / SDR GATEWAY", status: "published", version: "0.1.0 (alpha)",
+    summary: { en: "SIGIL's first public alpha is now available.", it: "La prima alpha pubblica di SIGIL è ora disponibile." },
+    detail: { en: "The open-source project connects analog radio voice messaging with the R3AKT ecosystem. Watch the new demonstration of mesh messaging with an affordable Baofeng radio.", it: "Il progetto open source collega i messaggi vocali delle radio analogiche all’ecosistema R3AKT. Guarda la nuova dimostrazione di messaggistica mesh con una radio Baofeng economica." },
+    url: "https://www.youtube.com/watch?v=srQTixyQQUE", link: { en: "Watch the SIGIL demonstration", it: "Guarda la dimostrazione di SIGIL" },
   },
   {
     id: "trex", name: "Amazfit T-Rex 2", type: "WEARABLE / REM TACTICAL", status: "preview",
