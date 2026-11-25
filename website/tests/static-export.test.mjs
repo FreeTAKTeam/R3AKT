@@ -63,3 +63,12 @@ test("the export charts the corrected measurements and serves only the current b
     "LXMF-rs-LICENSE.txt", "lxmf-fair-2026-11-01.json", "provenance.json",
   ].sort());
 });
+
+
+test("SIGIL video is featured on the homepage and accessible from the hero", () => {
+  assert.ok(html.includes('id="sigil-video"'));
+  assert.ok(html.includes('href="#sigil-video"'));
+  assert.ok(html.includes("SIGIL: mesh messaging with a Baofeng radio"));
+  assert.ok(html.includes("https://i.ytimg.com/vi/srQTixyQQUE/mqdefault.jpg"));
+  assert.ok(html.includes("https://www.youtube.com/watch?v=srQTixyQQUE"));
+});

@@ -17,8 +17,10 @@ const RCH_REPO = rchPython.repository;
 const R3AKT_REPO = "https://github.com/FreeTAKTeam/R3AKTClient";
 const RCH_MANIFESTO = `${RCH_REPO}/blob/main/docs/Manifesto_Reticulum_Community_Hub.md`;
 const REVEAL_TRAILER_ID = "ywKSxWirQnU";
+const SIGIL_VIDEO_ID = "srQTixyQQUE";
 
 const videos = [
+  { label: "SIGIL // MESH MESSAGING", url: `https://www.youtube.com/watch?v=${SIGIL_VIDEO_ID}` },
   { label: "REM // FIELD OPERATIONS", url: "https://www.youtube.com/watch?v=CytmrXzpsps&list=PLZ5ClmhIPkfLwVjcc8HQM8EOYZ1vLepED&index=2" },
   { label: "R3AKT // RESILIENT NETWORK", url: "https://www.youtube.com/watch?v=5LzndFXAnT8" },
 ];
@@ -124,8 +126,10 @@ const remScenarios = [
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "it">("en");
   const [trailerActive, setTrailerActive] = useState(false);
+  const [sigilVideoActive, setSigilVideoActive] = useState(false);
   const t = (en: string, it: string) => language === "en" ? en : it;
   const trailerLabel = t("Watch the reveal trailer", "Guarda il trailer di presentazione");
+  const sigilVideoLabel = t("Watch the new SIGIL video", "Guarda il nuovo video di SIGIL");
   const downloads = [
     { name: "REM", meta: `Android · ${remRelease.tag} · Complete / Light`, url: remRelease.notes },
     { name: "Fabric / RNS", meta: `${t("Stable", "Stabile")} · ${lxmfStable.tag}`, url: lxmfStable.notes },
@@ -217,7 +221,10 @@ export default function Home() {
               {t("Explore Fabric", "Esplora Fabric")} <ArrowIcon />
             </a>
           </div>
-          <a className="hero-trailer-link" href="#reveal-trailer"><span aria-hidden="true">▶</span> {trailerLabel}</a>
+          <div className="hero-video-links">
+            <a className="hero-trailer-link" href="#sigil-video"><span aria-hidden="true">▶</span> {sigilVideoLabel}</a>
+            <a className="hero-trailer-link" href="#reveal-trailer"><span aria-hidden="true">▶</span> {trailerLabel}</a>
+          </div>
           <div className="hero-proof">
             <span><i className="check" /> {t("End-to-end encryption", "Crittografia end-to-end")}</span>
             <span><i className="check" /> Offline-first</span>
@@ -272,6 +279,18 @@ export default function Home() {
         <span>RETICULUM + LXMF</span><i />
         <span>RADIO / TCP / LORA</span><i />
         <span>OPEN SOURCE</span>
+      </section>
+
+      <section className="reveal-trailer section-shell sigil-video" id="sigil-video" aria-labelledby="sigil-video-title">
+        <div className="section-heading reveal-trailer-copy">
+          <div>
+            <p className="section-kicker">{t("LATEST VIDEO / SIGIL 0.1.0 ALPHA", "ULTIMO VIDEO / SIGIL 0.1.0 ALPHA")}</p>
+            <h2 id="sigil-video-title">{t("SIGIL: mesh messaging with a Baofeng radio", "SIGIL: messaggistica mesh con una radio Baofeng")}</h2>
+          </div>
+          <p>{t("A new demonstration of the open-source SIGIL project.", "Una nuova dimostrazione del progetto open source SIGIL.")}</p>
+          <a className="button button-secondary" href={`https://www.youtube.com/watch?v=${SIGIL_VIDEO_ID}`} target="_blank" rel="noreferrer">{t("Watch on YouTube", "Guarda su YouTube")}</a>
+        </div>
+        <YouTubePlayer id={SIGIL_VIDEO_ID} title={sigilVideoLabel} playLabel={sigilVideoLabel} active={sigilVideoActive} onPlay={() => setSigilVideoActive(true)} />
       </section>
 
       <section className="reveal-trailer section-shell" id="reveal-trailer" aria-labelledby="reveal-trailer-title">
