@@ -1,0 +1,5 @@
+rule,severity,from,to,components,first_evidence,evidence_count,message
+cycle,error,,,ui/src/api ui/src/composables ui/src/stores ui/src/utils,ui/src/api/client.ts:1,165,"dependency cycle: ui/src/api, ui/src/composables, ui/src/stores, ui/src/utils"
+layer-order,warning,ui/src/api,ui/src/stores,,ui/src/api/client.ts:1,2,ui/src/api (layer transport) -> ui/src/stores (layer state) (import) points up the layer order
+layer-order,warning,ui/src/utils,ui/src/api,,ui/src/utils/checklist-create.ts:1,7,ui/src/utils (layer utils) -> ui/src/api (layer transport) (import+type-import) points up the layer order
+transport-not-on-store,warning,ui/src/api,ui/src/stores,,ui/src/api/client.ts:1,2,"ui/src/api -> ui/src/stores (import) is forbidden by `transport-not-on-store`: FRONTEND_ENGINEERING_PRINCIPLES.md: low-level transport should not import a feature store (known: api/client.ts, api/ws.ts)"

@@ -1,0 +1,13 @@
+id,fan_in,fan_out,in_cycle,cluster
+lxmf-runtime,1,0,false,C001
+lxmf-sdk,1,0,false,C002
+lxmf-wire,1,0,false,C003
+r3akt-library-core,1,0,false,C004
+r3akt-map-core,1,0,false,C005
+r3akt-mesh-delivery,1,0,false,C006
+r3akt-profile-rch,1,0,false,C007
+reticulum-mobile-jni-boundary,1,0,false,C008
+reticulum-rs,1,0,false,C009
+reticulum-rs-transport,1,0,false,C010
+reticulum_mobile,0,11,false,C012
+rpp-core,1,0,false,C011

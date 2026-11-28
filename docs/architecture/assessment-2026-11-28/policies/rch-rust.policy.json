@@ -1,0 +1,20 @@
+{
+  "schema": "@POLICY_SCHEMA@",
+  "scope": {"include": ["*"], "exclude": [], "edge_kinds": ["normal", "build"]},
+  "layers": [
+    {"name": "contracts", "members": ["r3akt-protocol", "r3akt-identity", "r3akt-library-core"]},
+    {"name": "shared-domain", "members": ["r3akt-profile-rch", "r3akt-map-core"]},
+    {"name": "hub-core", "members": ["r3akt-rch-core"]},
+    {"name": "adapters", "members": ["r3akt-transport-rns", "r3akt-tak-connector", "r3akt-rch-bridge"]},
+    {"name": "hosts", "members": ["r3akt-rch-server", "rch-ingest-sim"]}
+  ],
+  "layer_rule": {"severity": "warning", "allow_same_layer": true, "unlayered": "warning"},
+  "rules": [
+    {"id": "tak-independent-of-server", "effect": "forbid", "from": "r3akt-tak-connector", "to": "r3akt-rch-server",
+     "severity": "error", "rationale": "docs/examples.md: TAK is an independent service and does not share the RCH server socket"}
+  ],
+  "cycles": {"severity": "error"},
+  "exceptions": [],
+  "expired_exception_severity": "error",
+  "frdp_coupled_severity": "warning"
+}

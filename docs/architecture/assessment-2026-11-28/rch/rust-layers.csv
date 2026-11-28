@@ -1,0 +1,6 @@
+group,members,internal_pairs,possible_internal,cohesion,crossing_pairs,possible_crossing,coupling,outgoing,incoming
+adapters,r3akt-rch-bridge r3akt-tak-connector r3akt-transport-rns,0,6,0.0000,7,48,0.1458,5,2
+contracts,r3akt-identity r3akt-library-core r3akt-protocol,1,6,0.1667,8,48,0.1667,0,8
+hosts,r3akt-rch-server rch-ingest-sim,0,2,0.0000,11,36,0.3056,11,0
+hub-core,r3akt-rch-core,0,0,,7,20,0.3500,4,3
+shared-domain,r3akt-map-core r3akt-profile-rch,1,2,0.5000,9,36,0.2500,1,8

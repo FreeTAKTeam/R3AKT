@@ -1,0 +1,7 @@
+group,members,internal_pairs,possible_internal,cohesion,crossing_pairs,possible_crossing,coupling,outgoing,incoming
+apps,lxmf-cli reticulumd rns-tools,0,6,0.0000,11,132,0.0833,11,0
+no-std-core,lxmf-embedded-mini reticulum-rs-core rns-embedded-core rns-embedded-runtime,1,12,0.0833,12,168,0.0714,0,12
+protocol,lxmf-reference lxmf-wire r3akt-event-broker rns-embedded-ffi rns-embedded-mininode,1,20,0.0500,13,200,0.0650,4,9
+sdk-facades,lxmf lxmf-runtime lxmf-sdk meshchat-api reticulum-rs,2,20,0.1000,14,200,0.0700,12,2
+services,lxmf-propagation rdo-core reticulum-rs-bluetooth reticulum-rs-rpc reticulum-rs-transport rpp-core,4,30,0.1333,19,228,0.0833,6,13
+tooling,test-support xtask,0,2,0.0000,3,92,0.0326,3,0

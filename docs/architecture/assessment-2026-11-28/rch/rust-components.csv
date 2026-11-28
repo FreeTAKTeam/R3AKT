@@ -1,0 +1,12 @@
+id,fan_in,fan_out,in_cycle,cluster
+r3akt-identity,1,1,false,C003
+r3akt-library-core,2,0,false,C001
+r3akt-map-core,4,1,false,C005
+r3akt-profile-rch,5,1,false,C004
+r3akt-protocol,6,0,false,C002
+r3akt-rch-bridge,1,2,false,C007
+r3akt-rch-core,3,4,false,C006
+r3akt-rch-server,0,7,false,C010
+r3akt-tak-connector,0,1,false,C008
+r3akt-transport-rns,1,2,false,C009
+rch-ingest-sim,0,4,false,C011

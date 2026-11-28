@@ -1,0 +1,5 @@
+group,members,internal_pairs,possible_internal,cohesion,crossing_pairs,possible_crossing,coupling,outgoing,incoming
+fabric,lxmf-runtime lxmf-sdk lxmf-wire reticulum-rs reticulum-rs-transport rpp-core,0,30,0.0000,6,72,0.0833,0,6
+mobile-runtime,reticulum_mobile,0,0,,11,22,0.5000,11,0
+native-boundary,reticulum-mobile-jni-boundary,0,0,,1,22,0.0455,0,1
+shared-r3akt,r3akt-library-core r3akt-map-core r3akt-mesh-delivery r3akt-profile-rch,0,12,0.0000,4,64,0.0625,0,4

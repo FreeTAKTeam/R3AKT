@@ -1,0 +1,18 @@
+{
+  "schema": "@POLICY_SCHEMA@",
+  "scope": {"include": ["*"], "exclude": [], "edge_kinds": ["normal", "build"]},
+  "layers": [
+    {"name": "no-std-core", "members": ["reticulum-rs-core", "rns-embedded-core", "rns-embedded-runtime", "lxmf-embedded-mini"]},
+    {"name": "protocol", "members": ["lxmf-wire", "lxmf-reference", "r3akt-event-broker", "rns-embedded-ffi", "rns-embedded-mininode"]},
+    {"name": "services", "members": ["reticulum-rs-transport", "reticulum-rs-bluetooth", "reticulum-rs-rpc", "lxmf-propagation", "rdo-core", "rpp-core"]},
+    {"name": "sdk-facades", "members": ["lxmf-sdk", "lxmf-runtime", "meshchat-api", "lxmf", "reticulum-rs"]},
+    {"name": "apps", "members": ["lxmf-cli", "reticulumd", "rns-tools"]},
+    {"name": "tooling", "members": ["xtask", "test-support"]}
+  ],
+  "layer_rule": {"severity": "warning", "allow_same_layer": true, "unlayered": "warning"},
+  "rules": [],
+  "cycles": {"severity": "error"},
+  "exceptions": [],
+  "expired_exception_severity": "error",
+  "frdp_coupled_severity": "warning"
+}
