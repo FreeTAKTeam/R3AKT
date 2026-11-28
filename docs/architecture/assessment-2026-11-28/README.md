@@ -214,12 +214,26 @@ with archgraph v0.1.0.
 | REM Rust tests | `cargo +1.99.1 test --manifest-path crates/reticulum_mobile/Cargo.toml --locked`, with LXMF-rs `99fc770` beside it (REM's own CI pin) | exit 0, 576 passed, 2 ignored |
 | Full RCH Rust suite | `cargo +1.99.1 test --workspace --locked -- --test-threads=1` (as in RCH's CI), with LXMF-rs `99fc770` beside it | exit 0, 852 passed, 3 ignored, 52 test binaries |
 | Full LXMF-rs suite | `cargo nextest run --workspace --locked --no-fail-fast` (stable 1.99.1) | exit 0, 4335 passed, 305 skipped |
-| RCH and REM Playwright end-to-end tests | — | **not run**: they need browser downloads and system packages (`playwright install --with-deps`) |
+| RCH Playwright end-to-end tests | `npx playwright test`, then `npx playwright test --config playwright.sensor.config.ts` (in `ui/`) | exit 0, 3 passed and 1 passed |
+| REM Playwright end-to-end tests (desktop and mobile Chromium) | `npm run test:e2e` | exit 1, 163 passed, 1 failed (see below) |
 
 The second set of rows was run on 2026-11-28 on exports of the pinned commits above
-(`git archive`), with Node 24.18.0 and npm 11.16.0. RCH and REM resolve
+(`git archive`), with Node 24.18.0 and npm 11.16.0. The Playwright runs used `CI=1`. RCH and REM resolve
 `../LXMF-rs` and `../../../LXMF-rs`, so LXMF-rs `99fc770` was placed beside them, as their
 CI does. The full LXMF-rs suite ran at its own pin, `a1492c1`.
+
+**The REM end-to-end failure.** `e2e/sensor-geometry.spec.ts` ("native origin sensors
+render, hide, survive style reset and suspend on failure") failed in the `mobile-chromium`
+project on all three attempts.
+
+- The test clears one sensor's checkbox and expects 1 footprint on the map. The checkbox
+  cleared, but the map still reported all 5 (spec line 34).
+- The same test passed in the desktop `chromium` project.
+- REM's own CI passed its full Playwright set at this same commit.
+- This run differs from REM's CI in three ways: Node 24 instead of 20, Ubuntu 26.04
+  instead of 24.04, and a locally installed Chromium 1208.
+- The cause has not been isolated, so this is recorded as an unexplained local failure,
+  not as a defect in REM.
 
 On this machine, RCH's `openssl-sys` build needed `CC=/usr/bin/gcc`, because the default
 `cc` does not search the multiarch include folder. That is a property of this machine, not
