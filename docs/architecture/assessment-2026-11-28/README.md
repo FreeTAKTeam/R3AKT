@@ -22,12 +22,13 @@ approval.
 
 Tools:
 
-- **Analyzer and validator:** a private dependency-analysis tool (DSM/SCC/policy
-  validator). It reads a language-neutral component graph (components, directed edges
-  with evidence, unresolved dependencies) and writes the DSM, clusters, metrics and
-  policy findings. Its raw JSON/SARIF output is not committed; the CSVs here are taken
-  from it, and the policies are committed with the schema id replaced by
-  `@POLICY_SCHEMA@`.
+- **Analyzer and validator:** [archgraph](https://github.com/FreeTAKTeam/archgraph)
+  v0.1.0, an open-source DSM, SCC and policy validator. It reads a language-neutral
+  component graph (`archgraph/graph/v1`): components, directed edges with evidence, and
+  unresolved dependencies. It writes the DSM, clusters, metrics and policy findings.
+  - Its raw JSON/SARIF output is not committed. The CSVs here are taken from it.
+  - The policies in `policies/` use `archgraph/policy/v1`.
+  - The baseline was first produced by the same code before it was published as archgraph.
 - **Rust:** `cargo metadata --no-deps --offline --format-version 1` in each exported
   workspace (all three succeeded offline). Components are workspace crates; edges are
   declared manifest dependencies (`normal`, `build`, `dev`).
@@ -38,7 +39,7 @@ Tools:
   edge kinds. Computed and root-absolute specifiers go to `unresolved`; third-party,
   asset and intra-component imports are counted in the graph's limitations.
 
-Reproduce (paths relative to each exported repository; `<tool>` is the analyzer):
+Reproduce (paths relative to each exported repository; `<tool>` is `archgraph`):
 
 ```bash
 git -C <repo> archive <pinned-sha> | tar -x -C <export>
@@ -46,8 +47,8 @@ git -C <repo> archive <pinned-sha> | tar -x -C <export>
 cargo metadata --no-deps --offline --format-version 1 > meta.json
 <tool> analyze --metadata-json meta.json --kinds normal,build --policy <policy> --out-dir <out>
 # REM's crate adds: --external 'lxmf*' --external 'reticulum*' --external 'r3akt*' --external rpp-core
-# TypeScript/Vue (graph schema id of the tool passed in, not stored here)
-python3 scripts/architecture/ts_import_graph.py --root <export> --schema <graph-schema-id> \
+# TypeScript/Vue
+python3 scripts/architecture/ts_import_graph.py --root <export> --schema archgraph/graph/v1 \
   --source ui/src --test-source ui/tests --test-source ui/e2e --commit <sha> --out graph.json
 <tool> analyze --graph graph.json --kinds import,type-import,dynamic-import --policy <policy> --out-dir <out>
 # Validation, report-only (exit 0)
@@ -186,6 +187,19 @@ granularity (crates versus directories).
 Unknown cells stay unknown; they are not read as independence.
 
 ## Report-only validation and existing test results
+
+**CI gate.** `.github/workflows/architecture.yml` runs
+[`scripts/architecture/pilot_gate.sh`](../../../scripts/architecture/pilot_gate.sh)
+with archgraph v0.1.0.
+
+- **Inputs:** on pull requests and pushes it checks the pinned revisions above. A weekly
+  run checks each repository's current `main`.
+- **Outputs:** it validates all five graphs report-only, writes a summary table, and
+  uploads the JSON, SARIF and UI graphs as the `architecture-report` artifact.
+- **Failure:** findings never fail the job. A missing checkout, a bad input or a missing
+  tool does.
+- **Local run:** at the pins it reproduced the five results below exactly.
+
 
 | Check | Command (in the export or this repo) | Result |
 | --- | --- | --- |

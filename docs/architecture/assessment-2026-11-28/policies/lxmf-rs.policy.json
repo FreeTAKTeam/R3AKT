@@ -1,5 +1,5 @@
 {
-  "schema": "@POLICY_SCHEMA@",
+  "schema": "archgraph/policy/v1",
   "scope": {"include": ["*"], "exclude": [], "edge_kinds": ["normal", "build"]},
   "layers": [
     {"name": "no-std-core", "members": ["reticulum-rs-core", "rns-embedded-core", "rns-embedded-runtime", "lxmf-embedded-mini"]},

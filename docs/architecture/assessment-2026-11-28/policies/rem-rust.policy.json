@@ -1,5 +1,5 @@
 {
-  "schema": "@POLICY_SCHEMA@",
+  "schema": "archgraph/policy/v1",
   "scope": {"include": ["*"], "exclude": [], "edge_kinds": ["normal", "build"]},
   "layers": [
     {"name": "fabric", "members": ["lxmf-*", "reticulum-rs*", "rpp-core"]},
