@@ -1,5 +1,5 @@
 {
-  "schema": "@POLICY_SCHEMA@",
+  "schema": "archgraph/policy/v1",
   "scope": {"include": ["ui/src*"], "exclude": [], "edge_kinds": ["import", "type-import", "dynamic-import"]},
   "layers": [
     {"name": "types", "members": ["ui/src/types"]},

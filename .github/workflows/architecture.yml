@@ -1,0 +1,66 @@
+name: Architecture (report-only)
+
+# Validates the pilot repositories against the committed policies with archgraph.
+# Report-only: findings never fail the job; a broken input or tool does.
+# Pull requests and pushes check the pinned revisions of the assessment; the weekly run
+# checks each repository's current main, so drift shows up without blocking anyone.
+on:
+  pull_request:
+    paths: ['docs/architecture/**', 'scripts/architecture/**', '.github/workflows/architecture.yml']
+  push:
+    branches: [main]
+    paths: ['docs/architecture/**', 'scripts/architecture/**', '.github/workflows/architecture.yml']
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  LATEST: ${{ github.event_name == 'schedule' }}
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: r3akt
+      - uses: actions/checkout@v6
+        with:
+          repository: FreeTAKTeam/Reticulum-Community-Hub
+          ref: ${{ env.LATEST == 'true' && 'main' || 'ad2e2e0a80e171a3fc195aea96b6b195803cd5da' }}
+          path: work/rch
+      - uses: actions/checkout@v6
+        with:
+          repository: FreeTAKTeam/reticulum_mobile_emergency_management
+          ref: ${{ env.LATEST == 'true' && 'main' || '8bcfdd3d4a656b70c4ef958f621a3f0a24ccca0f' }}
+          path: work/rem
+      - uses: actions/checkout@v6
+        with:
+          repository: FreeTAKTeam/LXMF-rs
+          ref: ${{ env.LATEST == 'true' && 'main' || 'a1492c12ede4e463b8127d3e6a459a504dd52aae' }}
+          path: work/LXMF-rs
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install archgraph
+        run: cargo install --locked --git https://github.com/FreeTAKTeam/archgraph --tag v0.1.0
+      - name: Validate (report-only)
+        run: bash r3akt/scripts/architecture/pilot_gate.sh work architecture-report
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          print("| Graph | Outcome | Errors | Warnings | Notes |\n| --- | --- | ---: | ---: | ---: |")
+          for p in sorted(pathlib.Path("architecture-report").glob("*.json")):
+              if p.name.endswith(".graph.json"):
+                  continue
+              r = json.loads(p.read_text()); c = r["counts"]
+              print(f"| {p.stem} | {r['outcome']} | {c['error']} | {c['warning']} | {c['note']} |")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: architecture-report
+          path: architecture-report/
