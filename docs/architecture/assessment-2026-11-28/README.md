@@ -209,9 +209,21 @@ with archgraph v0.1.0.
 | Extractor self-test + existing R3AKT tests | `python3 -m unittest discover -s tests -t .` | 11 tests OK |
 | RCH, two small crates | `cargo +1.89.0 test --offline --locked -p r3akt-protocol -p r3akt-identity` (`CARGO_BUILD_JOBS=2`, target outside the repo) | exit 0, 8 passed (6 + 2), 0 failed |
 | LXMF-rs, two small crates | `cargo test --offline --locked -p rns-embedded-core -p rns-embedded-runtime` (same settings) | exit 0, 48 passed (23 + 25), 0 failed |
-| RCH and REM UI tests | — | **not run**: exported copies have no `node_modules`; installing needs the network |
-| REM Rust tests | — | **not run**: builds the full Fabric stack plus git dependencies |
-| Full RCH / LXMF-rs suites | — | **not run**: large workspace builds; only the crates above were sampled |
+| RCH UI unit tests | `npm --prefix ui ci`, then `npm --prefix ui test` (vitest) | exit 0, 285 passed in 60 files |
+| REM UI unit tests | `npm ci`, then `npm run test:unit` (node --test, vitest) | exit 0, 289 passed, 0 failed, 25 todo |
+| REM Rust tests | `cargo +1.99.1 test --manifest-path crates/reticulum_mobile/Cargo.toml --locked`, with LXMF-rs `99fc770` beside it (REM's own CI pin) | exit 0, 576 passed, 2 ignored |
+| Full RCH Rust suite | `cargo +1.99.1 test --workspace --locked -- --test-threads=1` (as in RCH's CI), with LXMF-rs `99fc770` beside it | exit 0, 852 passed, 3 ignored, 52 test binaries |
+| Full LXMF-rs suite | `cargo nextest run --workspace --locked --no-fail-fast` (stable 1.99.1) | exit 0, 4335 passed, 305 skipped |
+| RCH and REM Playwright end-to-end tests | — | **not run**: they need browser downloads and system packages (`playwright install --with-deps`) |
+
+The second set of rows was run on 2026-11-28 on exports of the pinned commits above
+(`git archive`), with Node 24.18.0 and npm 11.16.0. RCH and REM resolve
+`../LXMF-rs` and `../../../LXMF-rs`, so LXMF-rs `99fc770` was placed beside them, as their
+CI does. The full LXMF-rs suite ran at its own pin, `a1492c1`.
+
+On this machine, RCH's `openssl-sys` build needed `CC=/usr/bin/gcc`, because the default
+`cc` does not search the multiarch include folder. That is a property of this machine, not
+of RCH.
 
 RCH requires Rust 1.89 (its MSRV); the machine default 1.88 refused it, so the installed
 1.89.0 toolchain was used.
