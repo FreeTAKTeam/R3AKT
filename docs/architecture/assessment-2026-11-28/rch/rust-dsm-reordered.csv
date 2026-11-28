@@ -1,0 +1,12 @@
+depends_on →,r3akt-library-core,r3akt-protocol,r3akt-identity,r3akt-profile-rch,r3akt-map-core,r3akt-rch-core,r3akt-rch-bridge,r3akt-tak-connector,r3akt-transport-rns,r3akt-rch-server,rch-ingest-sim
+r3akt-library-core,,,,,,,,,,,
+r3akt-protocol,,,,,,,,,,,
+r3akt-identity,,normal,,,,,,,,,
+r3akt-profile-rch,,normal,,,,,,,,,
+r3akt-map-core,,,,normal,,,,,,,
+r3akt-rch-core,normal,normal,,normal,normal,,,,,,
+r3akt-rch-bridge,,,,normal,,normal,,,,,
+r3akt-tak-connector,,,,,normal,,,,,,
+r3akt-transport-rns,,normal,,,normal,,,,,,
+r3akt-rch-server,normal,normal,,normal,normal,normal,normal,,normal,,
+rch-ingest-sim,,normal,normal,normal,,normal,,,,,

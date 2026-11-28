@@ -1,0 +1,9 @@
+group,members,internal_pairs,possible_internal,cohesion,crossing_pairs,possible_crossing,coupling,outgoing,incoming
+app-shell,ui/src ui/src/router,1,2,0.5000,7,36,0.1944,7,0
+presentation,ui/src/components ui/src/pages,1,2,0.5000,12,36,0.3333,10,2
+state,ui/src/composables ui/src/stores,2,2,1.0000,13,36,0.3611,6,7
+transport,ui/src/api,0,0,,9,20,0.4500,2,7
+types,ui/src/types,0,0,,5,20,0.2500,0,5
+ui/e2e,ui/e2e,0,0,,0,20,0.0000,0,0
+ui/tests,ui/tests,0,0,,0,20,0.0000,0,0
+utils,ui/src/utils,0,0,,6,20,0.3000,1,5

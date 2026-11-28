@@ -1,0 +1,12 @@
+depends_on →,ui/e2e,ui/src,ui/src/api,ui/src/components,ui/src/composables,ui/src/pages,ui/src/router,ui/src/stores,ui/src/types,ui/src/utils,ui/tests
+ui/e2e,,,,,,,,,,,
+ui/src,,,import,import,,,import,import,,,
+ui/src/api,,,,,,,,import,,import,
+ui/src/components,,,import+type-import,,import,,,import,import+type-import,import+type-import,
+ui/src/composables,,,import+type-import,,,,,import,type-import,import,
+ui/src/pages,,,import+type-import,import,import,,,import+type-import,import+type-import,import+type-import,
+ui/src/router,,,import+type-import,,,dynamic-import,,import,import,,
+ui/src/stores,,,import+type-import,,import,,,,import+type-import,import+type-import,
+ui/src/types,,,,,,,,,,,
+ui/src/utils,,,import+type-import,,,,,,,,
+ui/tests,,,,,,,,,,,

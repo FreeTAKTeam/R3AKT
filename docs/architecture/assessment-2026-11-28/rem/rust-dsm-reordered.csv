@@ -1,0 +1,13 @@
+depends_on →,lxmf-runtime,lxmf-sdk,lxmf-wire,r3akt-library-core,r3akt-map-core,r3akt-mesh-delivery,r3akt-profile-rch,reticulum-mobile-jni-boundary,reticulum-rs,reticulum-rs-transport,rpp-core,reticulum_mobile
+lxmf-runtime,,,,,,,,,,,,
+lxmf-sdk,,,,,,,,,,,,
+lxmf-wire,,,,,,,,,,,,
+r3akt-library-core,,,,,,,,,,,,
+r3akt-map-core,,,,,,,,,,,,
+r3akt-mesh-delivery,,,,,,,,,,,,
+r3akt-profile-rch,,,,,,,,,,,,
+reticulum-mobile-jni-boundary,,,,,,,,,,,,
+reticulum-rs,,,,,,,,,,,,
+reticulum-rs-transport,,,,,,,,,,,,
+rpp-core,,,,,,,,,,,,
+reticulum_mobile,normal,normal,normal,normal,normal,normal,normal,normal,normal,normal,normal,

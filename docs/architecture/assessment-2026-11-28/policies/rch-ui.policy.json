@@ -1,0 +1,21 @@
+{
+  "schema": "@POLICY_SCHEMA@",
+  "scope": {"include": ["ui/src*"], "exclude": [], "edge_kinds": ["import", "type-import", "dynamic-import"]},
+  "layers": [
+    {"name": "types", "members": ["ui/src/types"]},
+    {"name": "utils", "members": ["ui/src/utils"]},
+    {"name": "transport", "members": ["ui/src/api"]},
+    {"name": "state", "members": ["ui/src/stores", "ui/src/composables"]},
+    {"name": "presentation", "members": ["ui/src/components", "ui/src/pages"]},
+    {"name": "app-shell", "members": ["ui/src/router", "ui/src"]}
+  ],
+  "layer_rule": {"severity": "warning", "allow_same_layer": true, "unlayered": "warning"},
+  "rules": [
+    {"id": "transport-not-on-store", "effect": "forbid", "from": "ui/src/api", "to": "ui/src/stores",
+     "severity": "warning", "rationale": "FRONTEND_ENGINEERING_PRINCIPLES.md: low-level transport should not import a feature store (known: api/client.ts, api/ws.ts)"}
+  ],
+  "cycles": {"severity": "error"},
+  "exceptions": [],
+  "expired_exception_severity": "error",
+  "frdp_coupled_severity": "warning"
+}

@@ -1,0 +1,12 @@
+id,fan_in,fan_out,in_cycle,cluster
+ui/e2e,0,0,false,C001
+ui/src,0,4,false,C007
+ui/src/api,7,2,true,C003
+ui/src/components,2,5,false,C004
+ui/src/composables,3,4,true,C003
+ui/src/pages,1,6,false,C005
+ui/src/router,1,4,false,C006
+ui/src/stores,6,4,true,C003
+ui/src/types,5,0,false,C002
+ui/src/utils,5,1,true,C003
+ui/tests,0,0,false,C008

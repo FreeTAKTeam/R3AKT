@@ -1,0 +1,16 @@
+{
+  "schema": "@POLICY_SCHEMA@",
+  "scope": {"include": ["*"], "exclude": [], "edge_kinds": ["normal", "build"]},
+  "layers": [
+    {"name": "fabric", "members": ["lxmf-*", "reticulum-rs*", "rpp-core"]},
+    {"name": "shared-r3akt", "members": ["r3akt-*"]},
+    {"name": "native-boundary", "members": ["reticulum-mobile-jni-boundary"]},
+    {"name": "mobile-runtime", "members": ["reticulum_mobile"]}
+  ],
+  "layer_rule": {"severity": "warning", "allow_same_layer": true, "unlayered": "warning"},
+  "rules": [],
+  "cycles": {"severity": "error"},
+  "exceptions": [],
+  "expired_exception_severity": "error",
+  "frdp_coupled_severity": "warning"
+}

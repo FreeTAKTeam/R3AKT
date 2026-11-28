@@ -1,0 +1,6 @@
+rule,severity,from,to,components,first_evidence,evidence_count,message
+cycle,error,,,apps/mobile/src apps/mobile/src/components apps/mobile/src/composables apps/mobile/src/views,apps/mobile/src/App.vue:9,142,"dependency cycle: apps/mobile/src, apps/mobile/src/components, apps/mobile/src/composables, apps/mobile/src/views"
+cycle,error,,,apps/mobile/src/services apps/mobile/src/utils,apps/mobile/src/services/hubRegistryBootstrap.ts:4,7,"dependency cycle: apps/mobile/src/services, apps/mobile/src/utils"
+layer-order,warning,apps/mobile/src/components,apps/mobile/src,,apps/mobile/src/components/AppToolsMenu.vue:5,1,apps/mobile/src/components (layer presentation) -> apps/mobile/src (layer app-shell) (import) points up the layer order
+layer-order,warning,apps/mobile/src/composables,apps/mobile/src/components,,apps/mobile/src/composables/useSetupWizard.ts:4,3,apps/mobile/src/composables (layer state) -> apps/mobile/src/components (layer presentation) (import) points up the layer order
+layer-order,warning,apps/mobile/src/utils,apps/mobile/src/services,,apps/mobile/src/utils/checklistNotifications.ts:3,5,apps/mobile/src/utils (layer utils) -> apps/mobile/src/services (layer services) (import+type-import) points up the layer order

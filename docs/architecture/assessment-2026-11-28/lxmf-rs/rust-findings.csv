@@ -1,0 +1,3 @@
+rule,severity,from,to,components,first_evidence,evidence_count,message
+unresolved,note,lxmf-sdk,vendor/zeromq,,crates/libs/lxmf-sdk/Cargo.toml:28,1,lxmf-sdk -> vendor/zeromq (normal) not resolved: path dependency outside the workspace members; rules cannot check it
+unresolved,note,reticulumd,vendor/zeromq,,crates/apps/reticulumd/Cargo.toml:44,1,reticulumd -> vendor/zeromq (normal) not resolved: path dependency outside the workspace members; rules cannot check it
