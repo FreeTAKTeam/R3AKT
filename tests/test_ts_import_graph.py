@@ -16,6 +16,7 @@ FIXTURE = {
         "import {\n  send,\n} from '@acme/client'\n"
         "import { helper } from './helper'\n"
         "import { gone } from '../missing'\n"
+        "import { x } from '@/stores/x'\n"
         "const m = await import(name)\n"
         "const v = await import('../views/TaskView.vue')\n"
     ),
@@ -60,7 +61,8 @@ class TestTsImportGraph(unittest.TestCase):
         reasons = sorted((u["reason"], u["kind"]) for u in g["unresolved"])
         self.assertEqual(reasons, [("computed module specifier", "dynamic-import"),
                                    ("file not found", "import"),
-                                   ("root-absolute specifier; bundler root not known", "test-dynamic-import")])
+                                   ("root-absolute specifier; bundler root not known", "test-dynamic-import"),
+                                   ("unconfigured alias; pass --alias", "import")])
         limits = " ".join(g["source"]["limitations"])
         self.assertIn("1 third-party import statements to 1 packages not modelled: vue", limits)
         self.assertIn("4 intra-component imports not shown in the DSM; 1 asset imports", limits)

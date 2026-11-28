@@ -103,6 +103,11 @@ def build(root: Path, schema: str, sources, test_sources, aliases, commit=None) 
                 unresolved.append({"from": comp, "target": spec, "kind": kind,
                                    "reason": "root-absolute specifier; bundler root not known", "evidence": [ev]})
                 continue
+            elif spec.startswith(("@/", "~")):
+                # A bundler alias (Vue's `@/`), not a package: never count it as third-party.
+                unresolved.append({"from": comp, "target": spec, "kind": kind,
+                                   "reason": "unconfigured alias; pass --alias", "evidence": [ev]})
+                continue
             elif spec.startswith("."):
                 target = resolve(f.parent, spec)
             else:
@@ -129,7 +134,8 @@ def build(root: Path, schema: str, sources, test_sources, aliases, commit=None) 
         f"{sum(third_party.values())} third-party import statements to {len(third_party)} packages not modelled: "
         + ", ".join(sorted(third_party)),
     ]
-    source = {"extractor": "ts-imports", "dirty": False,
+    # `dirty` is left out: this script cannot see the working tree's state.
+    source = {"extractor": "ts-imports",
               "settings": {"sources": ",".join(sources), "test_sources": ",".join(test_sources),
                            "aliases": ",".join(f"{k}={v}" for k, v in sorted(aliases.items()))},
               "limitations": limitations}
